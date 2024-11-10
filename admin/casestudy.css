@@ -1,0 +1,599 @@
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background: #f3f3f3;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+.sidebar {
+  height: 100%;
+  width: 300px; 
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: white;
+  overflow-x: hidden;
+  transition: width 0.5s; 
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+#logo {
+  width: 80px;
+  height: 80px;
+  margin-left: 6rem;
+  margin-bottom: 30px;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center; 
+  padding: 20px 15px;
+  text-align: left;
+  font-size: 20px;
+  transition: margin 0.3s, font-size 0.3s; 
+  color: #1D169D;
+  font-weight: 500;
+}
+
+#dashboard-menu {
+  padding-bottom: 25px;
+  font-size: 25px;
+}
+
+.sidebar-item:hover, .sidebar-item:active {
+  background: #879df4;
+  border-radius: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  color: white;
+}
+
+.sidebar-item.active {
+  background: #879df4;
+  color: white;
+  border-radius: 10px;
+}
+
+.logout {
+  font-size: 22px;
+  text-align: center;
+  margin: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  padding: 10px;
+  font-weight: 500;
+}
+
+.logout:hover, .logout:active {
+  background: #e0e0e0;
+  border-radius: 10px;
+  margin-left: 80px;
+  margin-right: 80px;
+}
+
+.material-symbols-rounded {
+  font-size: 24px;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.sidebar.minimized .sidebar-item:hover, .sidebar.minimized #logoutButton:hover, .sidebar.minimized #dashboard-menu:hover {
+  background: #879df4;
+  color: white;
+  border-radius: 20px 0 0 20px;
+  margin-left: 15px;
+  padding-left: 15px;
+  margin-right: 0;
+}
+
+.sidebar.minimized {
+  width: 100px; 
+  transition: margin 0.1s, font-size 0.1s;
+}
+
+.sidebar.minimized .sidebar-item {
+  padding: 20px 0; 
+  font-size: 0; 
+  overflow: hidden; 
+  margin-left: 25px;
+  margin-top: 20px;
+}
+
+.sidebar.minimized .logout {
+  margin: 30px 20px; 
+  font-size: 0; 
+  margin-left: 25px;
+}
+
+.sidebar.minimized #dashboard-menu {
+  margin-bottom: 0;
+  font-size: 0;
+}
+
+.sidebar.minimized .logout {
+  text-align: left;
+  display: flex;
+  align-items: left;
+  margin: 0;
+  margin-left: 10px;
+  margin-top: 60px;
+}
+
+.sidebar.minimized hr {
+  display: none;
+}
+
+.sidebar.minimized #logo {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 30px;
+  margin: 0;
+  margin-left: 18px;
+}
+
+.sidebar.minimized .material-symbols-rounded {
+  font-size: 30px;
+}
+
+.menu-btn {
+  font-size: 25px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: black;
+  padding: 10px;
+  margin-left: 15px;
+}
+
+.menu-btn:hover {
+  background: #f3f3f3;
+  border-radius: 50%;
+}
+
+
+#main {
+  width: calc(100% - 300px); 
+  margin-left: 300px; 
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.header {
+  background-color: white;
+  color: black;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  position: relative; 
+}
+
+.header-container {
+  margin-left: 10px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#dashboard-text {
+  font-size: 25px;
+}
+
+.right-items {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.right-items:hover {
+  transform: scale(1.05); 
+}
+
+.name {
+  margin-right: 15px; 
+  cursor: pointer;
+  padding: 10px;
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.profile {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.profile .material-symbols-rounded {
+  font-size: 30px;
+}
+
+
+
+
+
+
+.CSR-container {
+  background-color: white;
+  border: 1px solid #000000; 
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  margin: 2rem;
+  max-height: 80vh; 
+  overflow-y: scroll; /* Add scrollbar if content exceeds the height */
+  }
+
+.Title {
+  text-align: center;
+  padding-top: 20px; /* adds 20px padding to the top hehe */
+}
+
+.upload-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  transform: translate(-4%, -5%);  
+}
+
+.id-picture-label {
+  margin-left: 20px;
+  cursor: pointer;
+  width: 150px; /* Keep the original width */
+  height: 150px; /* Keep the original height */
+  border: 1px solid black;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+.id-picture-preview {
+  width: 100%; 
+  height: 100%; 
+  object-fit: contain; /* Maintain aspect ratio */
+  border-radius: 5px; /* Match the label's border radius */
+  display: none; /* Initially hidden */
+}
+
+.FamInfo-Container {
+  margin: 0;
+  padding: 0;
+}
+
+table {
+  width: 80%; /* Adjust the width to make the table more compact */
+  margin: 0 auto; /* Center the table */
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid black;
+  padding: 5px; /* Adjust padding for better readability */
+  text-align: left;
+}
+input {
+  width: 100%;
+  box-sizing: border-box;
+  border: none; /* Remove the input field border */
+  padding: 5px; /* Add padding inside the input field for better readability */
+}
+h3 {
+  margin-top: 20px;
+  
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"], select { /* ALISIN MUNA TO */
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
+.FamInfo-Container input {
+  border: none;
+}
+
+input[type="radio"] {
+  margin-right: 5px;
+}
+
+/* Placeholder Text */
+::placeholder {
+color: #aaa;
+}
+
+
+.date {
+display: flex;
+align-items: center;
+justify-content: flex-end;
+margin-bottom: 1rem;
+}
+
+.date-label {
+margin-right: 0.5rem;
+font-weight: bold;
+}
+
+.date-input {
+padding: 0.5rem;
+font-size: 1rem;
+border: 1px solid black;
+border-radius: 4px;
+width: 200px;
+}
+
+.container {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+grid-auto-rows: minmax(40px, auto);
+grid-gap: 10px;
+}
+
+.name, .age, .year, .custom-select{
+width: 300px;
+}
+
+.birthdate{
+width: 200px;
+}
+
+.gender{
+width: 450px;
+}
+
+.place-of-birth, .famcircumtances{
+width: 400px;
+}
+.homeaddress{
+width: 500px;
+}
+
+.birthdate input[type="date"] {
+padding: 0.5rem;
+font-size: 1rem;
+border: 1px solid black;
+border-radius: 4px;
+width: 200px;
+}
+
+.gender {
+margin-bottom: 20px;
+}
+
+.radio-group-container {
+display: flex;
+align-items: center;
+padding: 10px;
+border: 1px solid black;
+border-radius: 10px;
+}
+
+.radio-option {
+margin-right: 20px;
+display: flex;
+align-items: center;
+}
+
+.radio-option input[type="radio"] {
+margin-right: 10px;
+}
+
+.radio-option label {
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+white-space: nowrap; /* Add this rule to prevent line breaks */
+}
+
+.radio-option input[type="radio"]:checked + label {
+color: #007bff;
+}
+
+.button-container{
+  width: 100%;
+  padding: 0 20px;
+  box-sizing: border-box;
+  text-align: center;
+  margin-top: 20px; 
+  }
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  
+  }
+
+.DownloadButton {
+margin-right: -1000px;
+}
+
+.evalButton {
+margin-bottom: 50px;
+}
+
+.evalButton, .DownloadButton{
+color:white ;
+background-color: #2F27CE;
+border-radius: 15px;
+font-size: 20px;
+}
+.evalButton:hover,.DownloadButton:hover{
+background-color:#080535;
+}
+
+.text-area-container {
+  margin: 20px 0;
+}
+
+.text-area-container label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  text-decoration: none;
+}
+
+.text-area-container textarea {
+  width: 100%;
+  height: 100px;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+  font-size: 16px;
+  resize: vertical;
+}
+
+.text-area-container textarea::placeholder {
+  font-family: sans-serif, 'Inter';
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+}
+
+
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    /* Modal Content Styling */
+    .modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    /* Modal Text Styling */
+    .modal-text {
+      font-size: 1.2em;
+      margin-bottom: 20px;
+    }
+
+    /* Button Container Styling */
+    .button-container {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    /* Accept Button Styling */
+    .accept-btn {
+      background-color: #28a745; /* Green color */
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 1em;
+      cursor: pointer;
+      width: 40%;
+    }
+
+    .accept-btn:hover {
+      background-color: #218838; /* Darker green on hover */
+    }
+
+    /* Decline Button Styling */
+    .decline-btn {
+      background-color: #dc3545; /* Red color */
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 1em;
+      cursor: pointer;
+      width: 40%;
+    }
+
+    .decline-btn:hover {
+      background-color: #c82333; /* Darker red on hover */
+    }
+
+    /* Proceed Button Styling */
+    .proceed-btn {
+      background-color: #007bff; /* Blue color */
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 1em;
+      cursor: pointer;
+      width: 50%;
+      margin: 0 auto;
+    }
+
+    .proceed-btn:hover {
+      background-color: #0069d9; /* Darker blue on hover */
+    }
+  
+  .scholarship-options {
+      display: flex;
+      flex-direction: column; /* Stack labels vertically */
+       /* Space between radio buttons */
+  }
+  
+  .scholarship-options label {
+      display: flex; /* Use flexbox for alignment */
+      align-items: center; /* Vertically align the radio button and text */
+      gap: 20px; /* Space between radio button and label text */
+  }
+
+    .output {
+      margin-top: 20px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .close-btn {
+      background-color: #dc3545;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .close-btn:hover {
+      background-color: #c82333;
+    }

@@ -1,43 +1,27 @@
 <?php
-include("sidebar.php");
+include("sidebar.php"); // Include the sidebar (which has the $con connection)
 
-$query="SELECT * FROM userdata where userRole = 'Scholar'";
-$result=mysqli_query($con,$query);
-if($result->num_rows > 0) {
-	$totalno = $result->num_rows;
-  } else {
-	$totalno = 0;
-  }
+// Example of fetching counts from the database
+$eligibleCount = getCount('eligible');  
+$ineligibleCount = getCount('ineligible'); 
+$fullScholarCount = getCount('full_scholar');
+$grantLevel1Count = getCount('grant_level_1');
+$grantLevel2Count = getCount('grant_level_2');
 
-  
-$query1="SELECT * FROM scholarinfo WHERE sc_status = 'Scholar'";
-$result1=mysqli_query($con,$query1);
-if($result1->num_rows > 0) {
-	$totalno1 = $result1->num_rows;
-  } else {
-	$totalno1 = 0;
-  }
+// Function to fetch count for a specific status
+function getCount($status) {
+    global $con; 
+    $query = "SELECT COUNT(*) FROM applicants WHERE status = '$status'";
+    $result = mysqli_query($con, $query);
+    
+    // Check for query errors
+    if (!$result) {
+        die("Query failed: " . mysqli_error($con));
+    }
 
-  $query1="SELECT * FROM scholarinfo WHERE sc_status = 'Pending'";
-  $result1=mysqli_query($con,$query1);
-  if($result1->num_rows > 0) {
-	  $totalno12 = $result1->num_rows;
-	} else {
-	  $totalno12 = 0;
-	}
-
-
-
-
-
-
-	$query1="SELECT * FROM scholarinfo WHERE sc_status = 'Pending'";
-	$result1=mysqli_query($con,$query1);
-	if($result1->num_rows > 0) {
-		$totalno12 = $result1->num_rows;
-	  } else {
-		$totalno12 = 0;
-	  }
+    $count = mysqli_fetch_assoc($result)['COUNT(*)'];
+    return $count;
+}
 ?>
 
 		<div class="main">
@@ -58,70 +42,104 @@ if($result1->num_rows > 0) {
 				    	<div class="col-12 col-lg-12 col-xxl-12 d-flex">
 							<div class="card flex-fill">
 								<div class="card-header">
-                                  <div class="row">  
+                            <div class="row">
+<div class="row">
+    <!-- Eligible Count -->
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col mt-0">
+                        <h5 class="card-title">Eligible</h5>
+                    </div>
+                    <div class="col-auto">
+                        <div class="stat text-primary">
+                            <i class="align-middle" data-feather="check-circle"></i>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="mt-1 mb-3"><?php echo $eligibleCount; ?></h1>
+            </div>
+        </div>
+    </div>
 
+    <!-- Ineligible Count -->
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col mt-0">
+                        <h5 class="card-title">Ineligible</h5>
+                    </div>
+                    <div class="col-auto">
+                        <div class="stat text-danger">
+                            <i class="align-middle" data-feather="x-circle"></i>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="mt-1 mb-3"><?php echo $ineligibleCount; ?></h1>
+            </div>
+        </div>
+    </div>
 
-					
+    <!-- Full Scholar Count -->
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col mt-0">
+                        <h5 class="card-title">Full Scholar</h5>
+                    </div>
+                    <div class="col-auto">
+                        <div class="stat text-success">
+                            <i class="align-middle" data-feather="award"></i>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="mt-1 mb-3"><?php echo $fullScholarCount; ?></h1>
+            </div>
+        </div>
+    </div>
 
-								   <div class="col-sm-4">
-										<div class="card">
-											<div class="card-body">
-												<div class="row">
-													<div class="col mt-0">
-														<h5 class="card-title">Scholars</h5>
-													</div>
+    <!-- Grant Level 1 Count -->
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col mt-0">
+                        <h5 class="card-title">Grant Level 1</h5>
+                    </div>
+                    <div class="col-auto">
+                        <div class="stat text-warning">
+                            <i class="align-middle" data-feather="award"></i>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="mt-1 mb-3"><?php echo $grantLevel1Count; ?></h1>
+            </div>
+        </div>
+    </div>
 
-													<div class="col-auto">
-														<div class="stat text-primary">
-															<i class="align-middle" data-feather="users"></i>
-														</div>
-													</div>
-												</div>
-												<h1 class="mt-1 mb-3"><?php echo $totalno1;?></h1>
-											
-											</div>
-										</div>
-                                   </div>
-							
-								   <div class="col-sm-4">
-										<div class="card">
-											<div class="card-body">
-												<div class="row">
-													<div class="col mt-0">
-														<h5 class="card-title">Applicants</h5>
-													</div>
+    <!-- Grant Level 2 Count -->
+    <div class="col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col mt-0">
+                        <h5 class="card-title">Grant Level 2</h5>
+                    </div>
+                    <div class="col-auto">
+                        <div class="stat text-info">
+                            <i class="align-middle" data-feather="award"></i>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="mt-1 mb-3"><?php echo $grantLevel2Count; ?></h1>
+            </div>
+        </div>
+    </div>
+</div>
 
-													<div class="col-auto">
-														<div class="stat text-primary">
-															<i class="align-middle" data-feather="user"></i>
-														</div>
-													</div>
-												</div>
-												<h1 class="mt-1 mb-3"><?php echo $totalno12;?></h1>
-											</div>
-										</div>
-                                   </div>
-								   <div class="col-sm-4">
-										<div class="card">
-											<div class="card-body">
-												<div class="row">
-													<div class="col mt-0">
-														<h5 class="card-title">Graduates</h5>
-													</div>
-
-													<div class="col-auto">
-														<div class="stat text-primary">
-															<i class="align-middle" data-feather="users"></i>
-														</div>
-													</div>
-												</div>
-												<h1 class="mt-1 mb-3">0</h1>
-											</div>
-										</div>
-                                   </div>
-							
-
-								  </div>
 								  <div class="row">
 								  <div class="col-12 col-lg-6">
 							<div class="card">
@@ -172,57 +190,40 @@ if($result1->num_rows > 0) {
 		$(document).ready(function () {
     $('#example').DataTable();
 });
-		document.addEventListener("DOMContentLoaded", function() {
-			// Bar chart
-			new Chart(document.getElementById("chartjs-bar"), {
-				type: "bar",
-				data: {
-					labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-					datasets: [{
-						label: "Applicants",
-						backgroundColor: window.theme.primary,
-						borderColor: window.theme.primary,
-						hoverBackgroundColor: window.theme.primary,
-						hoverBorderColor: window.theme.primary,
-						data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
-						barPercentage: .75,
-						categoryPercentage: .5
-					}, {
-						label: "Scholars",
-						backgroundColor: window.theme.secondary,
-						borderColor:  window.theme.secondary,
-						hoverBackgroundColor:  window.theme.secondary,
-						hoverBorderColor:  window.theme.secondary,
-						data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2],
-						barPercentage: .75,
-						categoryPercentage: .5
-					}]
-				},
-				options: {
-					maintainAspectRatio: false,
-					legend: {
-						display: false
-					},
-					scales: {
-						yAxes: [{
-							gridLines: {
-								display: false
-							},
-							stacked: false,
-							ticks: {
-								stepSize: 20
-							}
-						}],
-						xAxes: [{
-							stacked: false,
-							gridLines: {
-								color: "transparent"
-							}
-						}]
-					}
-				}
-			});
-		});
+	document.addEventListener("DOMContentLoaded", function() {
+    // Doughnut chart
+    new Chart(document.getElementById("chartjs-doughnut"), {
+        type: "doughnut",
+        data: {
+            labels: ["Eligible", "Ineligible", "Full Scholarship", "Grant Level 1", "Grant Level 2"],
+            datasets: [{
+                data: [
+                    <?php echo $eligible; ?>, 
+                    <?php echo $ineligible; ?>, 
+                    <?php echo $full_scholarship; ?>, 
+                    <?php echo $grant_level_1; ?>, 
+                    <?php echo $grant_level_2; ?>
+                ],
+                backgroundColor: [
+                    window.theme.primary,
+                    window.theme.success,
+                    window.theme.warning,
+                    window.theme.info,
+                    window.theme.danger
+                ],
+                borderColor: "transparent"
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            cutoutPercentage: 65,
+            legend: {
+                display: false
+            }
+        }
+    });
+});
+
 	</script>
        
 	  <?php 

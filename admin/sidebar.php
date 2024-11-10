@@ -29,8 +29,9 @@ $cur_page = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+
 
 
 
-	<title>San Miguel Scholars</title>
+	<title>ASEEST</title>
 <link href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" rel="stylesheet">
+
 <link href="css/app.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
@@ -113,15 +114,15 @@ active{
 					</li>
 
 					
-					
+						<li class="sidebar-item <?php if( ($cur_page == 'casestudy.php') ) {echo 'active ';} ?>">
+						<a class="sidebar-link" href="casestudy.php">
+              <i class="align-middle" data-feather="settings" style="color:#ffff;"></i> <span class="align-middle">Case Study Report</span>
+            </a>
+					</li> 
 				
 				
 			
-					<li class="sidebar-item <?php if( ($cur_page == 'system.php') ) {echo 'active ';} ?>">
-						<a class="sidebar-link" href="system.php">
-              <i class="align-middle" data-feather="settings" style="color:#ffff;"></i> <span class="align-middle">Content Management</span>
-            </a>
-					</li>
+				
 
 					<li class="sidebar-item <?php if( ($cur_page == 'adminsettings.php') ) {echo 'active ';} ?>">
 						<a class="sidebar-link" href="adminsettings.php">

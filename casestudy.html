@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Case Study Reports</title>
+    <link rel="stylesheet" href="casestudy.css">
+    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap' rel='stylesheet'>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@40,400,0,0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.0.0-rc.7/html2canvas.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+<div class="sidebar" id="mySidebar">
+    <img id="logo" src="images/website_logo.png" alt="Logo">
+    <a href="dashboard.html" class="sidebar-item" id="dashboard-menu"><span class="material-symbols-rounded">grid_view</span>Dashboard</a>
+    <hr>
+    <a href="casestudy.html" class="sidebar-item active"><span class="material-symbols-rounded">assignment_ind</span>Case Study Report</a>
+    <a href="eligibility_assessment.html" class="sidebar-item"><span class="material-symbols-rounded">event_list</span>Eligibility Assessment</a>
+    <a href="record_management.html" class="sidebar-item"><span class="material-symbols-rounded">folder_supervised</span>Record Management</a>
+    <a href="support_tickets.html" class="sidebar-item"><span class="material-symbols-rounded">confirmation_number</span>Support Tickets</a>
+    <a href="#" class="logout" id="logoutButton"><span class="material-symbols-rounded">logout</span>Logout</a>
+</div>
+
+<div id="main">
+    <div class="header"> 
+        <button id="menuToggle" class="menu-btn" onclick="toggleSidebar()">&#9776;</button>
+        <div class="header-container">
+            <h1 id="dashboard-text">Dashboard</h1>
+            <div class="right-items">
+                <div class="profile"><span class="material-symbols-rounded">account_circle</span></div>
+                <h3 class="name" id="name">Maria Leonora Teresa</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button type="button" class="DownloadButton" id="downloadButton">Download</button>
+    </div>
+
+    <form id="caseStudyForm" enctype="multipart/form-data">
+        <div class="CSR-container">
+            <h1 class="Title">SOCIAL CASE STUDY REPORT</h1>
+            
+            <div class="upload-container">
+                <label class="id-picture-label" for="id-picture-input">2x2 Picture
+                    <img id="id-picture-preview" src="#" alt="ID Picture Preview" style="display: none;">
+                    <input type="file" id="id-picture-input" name="id_picture" accept="image/*" style="display: none;">
+                </label>
+            </div>
+            
+            <div class="date">
+                <label for="date-input" class="date-label">Date</label>
+                <input id="date-input" class="date-input" type="date" name="date" required>
+            </div>
+    
+            <h3>I. Identifying Information</h3>
+    
+            <div class="container">
+                <div class="name">
+                    <label for="name-input" class="name-label">Name</label>
+                    <input id="name-input" class="name-input" type="text" name="name" placeholder="Name" required>
+                </div>
+                <div class="year">
+                    <label>Year & Course</label>
+                    <input type="text" name="year_course" required>
+                </div>
+                <div class="age">
+                    <label>Age</label>
+                    <select name="age" required>
+                        <option value="">Select Age</option>
+                        <script>
+                            for (let i = 0; i <= 50; i++) {
+                                document.write(`<option value="${i}">${i}</option>`);
+                            }
+                        </script>
+                    </select>
+                </div>
+                <div class="custom-select">
+                    <label>Civil Status</label >
+                    <select name="civil_status" required>
+                        <option value="">Select Civil Status</option>
+                        <option value="1">Single</option>
+                        <option value="2">Married</option>
+                        <option value="3">Widowed</option>
+                        <option value="4">Divorced</option>
+                    </select>
+                </div>
+                <div class="birthdate">
+                    <label>Date of Birth</label>
+                    <input type="date" name="date_of_birth" required>
+                </div>
+                <div class="gender">
+                    <label>Gender</label>
+                    <div class="radio-group-container">
+                        <div class="radio-option">
+                            <input type="radio" id="male" name="gender" value="male" required>
+                            <label for="male">Male</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="female" name="gender" value="female" required>
+                            <label for="female">Female</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="non-binary" name="gender" value="non-binary" required>
+                            <label for="non-binary">Non-Binary</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="place-of-birth">
+                    <label for="place-of-birth">Place of Birth</label>
+                    <input type="text" id="place-of-birth" name="place_of_birth" required>
+                </div>
+                <div class="homeaddress">
+                    <label>Home Address</label>
+                    <input type="text" name="home_address" placeholder="Enter home address" required>
+                </div>
+                <div class="famcircumtances">
+                    <label>Family Circumstances</label>
+                    <input type="text" name="family_circumstances" placeholder="Enter family circumstances" required>
+                </div>
+            </div>
+    
+            <div class="FamInfo-Container">
+                <h3>II. FAMILY COMPOSITION</h3>
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Relationship to Client</th>
+                        <th>Civil Status</th>
+                        <th>Occupation</th>
+                        <th>Monthly Income</th>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="name1" required></td>
+                        <td><input type="text" name="relationship1" required></td>
+                        <td><input type="text" name="status1" required></td>
+                        <td><input type="text" name="occupation1" required></td>
+                        <td><input type="text" name="income1" required></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="name2"></td>
+                        <td><input type="text" name="relationship2"></td>
+                        <td><input type="text" name="status2"></td>
+                        <td><input type="text" name="occupation2"></td>
+                        <td><input type="text" name="income2"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="name3"></td>
+                        <td><input type="text" name="relationship3"></td>
+                        <td><input type="text" name="status3"></td>
+                        <td><input type="text" name="occupation3"></td>
+                        <td><input type="text" name="income3"></td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="text-area-container">
+                <label for="problem-presented">III. Problem Presented</label>
+                <textarea id="problem-presented" name="problem_presented" placeholder="The family does not have sufficient resources..."></textarea>
+              </div>
+              
+              <div class="text-area-container">
+                <label for="background-client">IV. Background of the Client</label>
+                <textarea id="background-client" name="background_client" placeholder="The client graduated..."></textarea>
+              </div>
+              
+              <div class="text-area-container">
+                <label for="socio-economic-condition">V. Social Economic Condition</label>
+                <textarea id="socio-economic-condition" name="socio_economic_condition" placeholder="Describe the client's socio-economic condition..."></textarea>
+              </div>
+              
+              <div class="text-area-container">
+                <label for="evaluation-recommendation">VI. Evaluation and Recommendation</label>
+                <textarea id="evaluation-recommendation" name="evaluation_recommendation" placeholder="Provide evaluation and recommendation..."></textarea>
+              </div>
+              
+        </div>
+
+    </form>
+
+    <div class="button-container">
+        <button type="button" class="evalButton" id="openModalBtn">Evaluate</button>
+    </div>
+
+    <!-- Accept/Decline Modal Structure -->
+    <div id="acceptDeclineModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-text">Did the applicant pass the interview?</div>
+        <div class="button-container2">
+        <button class="accept-btn" onclick="openScholarshipModal()">Accept</button>
+        <button class="decline-btn" onclick="closeModal('acceptDeclineModal')">Decline</button>
+        </div>
+    </div>
+    </div>
+
+    <!-- Select Scholarship Type Modal Structure -->
+    <div id="scholarshipModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-text">Select Scholarship Type</div>
+        <div class="scholarship-options">
+        <label>Full Scholarship<input type="radio" name="scholarship" value="full"></label>
+        <label>Grant Level 1<input type="radio" name="scholarship" value="grant1"> </label>
+        <label>Grant Level 2<input type="radio" name="scholarship" value="grant2"> </label>
+        </div>
+        <button type="button" class="proceed-btn" onclick="closeModal('scholarshipModal')">Proceed</button>
+    </div>
+    </div>
+
+</div>
+
+    </div>
+
+    <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('id-picture-input'); 
+            const imgPreview = document.getElementById('id-picture-preview'); 
+
+            fileInput.addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        imgPreview.src = e.target.result;
+                        imgPreview.style.display = 'block'; 
+                        imgPreview.style.width = '100%'; 
+                        imgPreview.style.height = '100%'; 
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    imgPreview.style.display = 'none'; 
+                }
+            });
+        });
+
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            window.location.href = '/logout'; 
+            sessionStorage.clear();
+            localStorage.clear();
+        });
+
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                const output = document.getElementById('id-picture-preview');
+                output.src = reader.result;
+                output.style.display = 'block'; 
+            }
+            reader.readAsDataURL(event.target.files[0]);
+        };
+
+        document.getElementById('downloadButton').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const formData = new FormData(document.getElementById('caseStudyForm'));
+            let content = '';
+
+            formData.forEach((value, key) => {
+                content += `${key}: ${value}\n`;
+            });
+
+            doc.text(content, 10, 10);
+            doc.save('form-data.pdf');
+        });
+
+        // Function to open a modal by ID
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "flex";
+        }
+
+        // Function to close a modal by ID
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        // Open the Accept/Decline modal when clicking the button
+        document.getElementById("openModalBtn").onclick = function() {
+            openModal("acceptDeclineModal");
+        }
+
+        // Open the Scholarship modal when Accept is clicked in the Accept/Decline modal
+        function openScholarshipModal() {
+            closeModal("acceptDeclineModal"); // Close the Accept/Decline modal
+            openModal("scholarshipModal"); // Open the Scholarship modal
+        }
+
+        function openAccountModal() {
+            closeModal("scholarshipModal"); // Close the Scholarship modal
+            openModal("accountModal"); // Open the Account Generation modal
+        }
+
+        // Close modal if the user clicks outside the modal content
+        window.onclick = function(event) {
+            if (event.target.classList.contains("modal")) {
+                event.target.style.display = "none";
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+        var openModalBtn = document.getElementById("openModalBtn");
+        if (openModalBtn) {
+            openModalBtn.addEventListener('click', function() {
+                openModal("acceptDeclineModal");
+            });
+        }
+    });
+
+
+    </script>
+
+</body>
+</html>
