@@ -30,20 +30,30 @@ $cur_page = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+
 
 
 	<title>San Miguel Scholars</title>
-	<link href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" rel="stylesheet">
-	<link href="css/app.css" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-	<link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-	<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"  crossorigin="anonymous"></script>
-	<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"  crossorigin="anonymous"></script>
-	<script src="https://code.jquery.com/jquery-3.5.1.js"  crossorigin="anonymous"></script>
-	<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"  crossorigin="anonymous"></script>
-	<script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js"  crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"  crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"  crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"  crossorigin="anonymous"></script>
-	<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js"  crossorigin="anonymous"></script>
-	<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js"  crossorigin="anonymous"></script>
+<link href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" rel="stylesheet">
+<link href="css/app.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+<!-- jQuery (Make sure this is loaded before DataTables) -->
+<script src="https://code.jquery.com/jquery-3.5.1.js" crossorigin="anonymous"></script>
+
+<!-- DataTables Core JS -->
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js" crossorigin="anonymous"></script>
+
+<!-- DataTables Bootstrap 5 integration -->
+<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js" crossorigin="anonymous"></script>
+
+<!-- DataTables Buttons Plugin -->
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js" crossorigin="anonymous"></script>
+
+<!-- JS libraries for exporting buttons -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.html5.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js" crossorigin="anonymous"></script>
+
 	<style>
 #wrapper{
   
@@ -94,15 +104,11 @@ active{
             </a>
 					</li>
 
-					<li class="sidebar-item <?php if( ($cur_page == 'users.php') ) {echo 'active ';} ?>">
-						<a class="sidebar-link" href="users.php">
-              <i class="align-middle" data-feather="users" style="color:#ffff;"></i> <span class="align-middle">Accounts</span>
-            </a>
-					</li>
+		
 
 					<li class="sidebar-item <?php if( ($cur_page == 'scholars.php') ) {echo 'active ';} ?>">
 						<a class="sidebar-link" href="scholars.php">
-              <i class="align-middle" data-feather="users" style="color:#ffff;"></i> <span class="align-middle">All Scholars</span>
+              <i class="align-middle" data-feather="users" style="color:#ffff;"></i> <span class="align-middle">Eligibility Results</span>
             </a>
 					</li>
 

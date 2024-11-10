@@ -1,31 +1,37 @@
 <?php
 include('../connection.php');
 
-if(isset($_POST['create'])){
+if (isset($_POST['create'])) {
     $fname = $con->real_escape_string($_POST['fname']);
     $lname = $con->real_escape_string($_POST['lname']);
     $number = $con->real_escape_string($_POST['number']);
+    $email = $con->real_escape_string($_POST['email']);
     $dob = $con->real_escape_string($_POST['dob']);
     $rel_stat = $con->real_escape_string($_POST['rel_stat']);
-    $stud_num = $con->real_escape_string($_POST['stud_num']);
     $address = $con->real_escape_string($_POST['address']);
     $address1 = $con->real_escape_string($_POST['address1']);
     $address2 = $con->real_escape_string($_POST['address2']);
     $yr_lvl = $con->real_escape_string($_POST['yr_lvl']);
-    $course = $con->real_escape_string($_POST['course']);
+    $indigent_status = $con->real_escape_string($_POST['indigent_status']);
+    $family_living = $con->real_escape_string($_POST['family_living']);
+    $living_with = $con->real_escape_string($_POST['living_with']);
+    $household_size = $con->real_escape_string($_POST['household_size']);
+    $school_name = $con->real_escape_string($_POST['school_name']);
+    $school_address = $con->real_escape_string($_POST['school_address']);
+    $general_average = $con->real_escape_string($_POST['general_average']);
     $image = $_FILES['image']['name'];
-    $target = "../assets/img/".basename($image);
+    $target = "../assets/img/" . basename($image);
     move_uploaded_file($_FILES['image']['tmp_name'], $target);
 
     // Insert the new record into scholarinfo table
-    $con->query("INSERT INTO `scholarinfo` (`firstName`, `LastName`, `number`, `dob`, `rel_stat`, `stud_num`, `address`, `address1`, `address2`, `yr_lvl`, `course`, `image`)
-                 VALUES ('$fname', '$lname', '$number', '$dob', '$rel_stat', '$stud_num', '$address', '$address1', '$address2', '$yr_lvl', '$course', '$image')");
+    $con->query("INSERT INTO `scholarinfo` (`firstName`, `LastName`, `number`, `email`, `dob`, `rel_stat`, `address`, `address1`, `address2`, `indigent_status`, `family_living`, `living_with`, `household_size`, `school_name`, `school_address`, `general_average`, `image`)
+                 VALUES ('$fname', '$lname', '$number', '$email', '$dob', '$rel_stat', '$address', '$address1', '$address2',  '$indigent_status', '$family_living', '$living_with', '$household_size', '$school_name', '$school_address', '$general_average', '$image')");
 
     // Retrieve the last inserted scholarID
     $infoid = $con->insert_id;
 
     // Redirect to mothersinfo.php with the scholarID as a query parameter
-    header("location: mothersinfo.php?scholarID=".$infoid);
+    header("location: mothersinfo.php?scholarID=" . $infoid);
 }
 ?>
 
@@ -77,21 +83,16 @@ if(isset($_POST['create'])){
                                                     <input class="form-control form-control-lg" type="text" name="lname" required="" placeholder="Last Name" />
                                                 </div>
                                             </div>
-                                            <div class="row mb-3">
-                                                <div class="col-6">
-                                                    <label class="form-label">Student Number</label>
-                                                    <input type="text" class="form-control" name="stud_num" placeholder="" aria-describedby="basic-addon1">
-                                                </div>
-                                                <div class="col-6">
-                                                    <label class="form-label">Course</label>
-                                                    <input type="text" class="form-control" name="course" placeholder="" aria-describedby="basic-addon1">
-                                                </div>
-                                            </div>
+                                    
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Contact Number</label>
                                             <input type="number" class="form-control" name="number" placeholder="" aria-describedby="basic-addon1" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" required="" maxlength="11" minlength="11">
                                         </div>
+										<div class="mb-3">
+											<label class="form-label">Email Address</label>
+											<input type="email" class="form-control" name="email" required>
+										</div>
                                         <div class="mb-3">
                                             <label class="form-label">Date of Birth</label>
                                             <input type="date" class="form-control" name="dob" placeholder="" aria-describedby="basic-addon1" required="">
@@ -125,19 +126,42 @@ if(isset($_POST['create'])){
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <input type="text" class="form-control" name="address2" value="San Miguel" readonly required="">
+                                            <input type="text" class="form-control" name="address2" value=""  required="">
                                         </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Year Level</label>
-                                            <select class="form-control" name="yr_lvl" required="">
-                                                <option selected disabled>Select</option>
-                                                <option value="First Year">1st Year</option>
-                                                <option value="Second Year">2nd Year</option>
-                                                <option value="Third Year">3rd Year</option>
-                                                <option value="Fourth Year">4th Year</option>
-                                                <option value="Others">Others</option>
-                                            </select>
-                                        </div>
+										<div class="mb-3">
+												<label class="form-label">Do you qualify as indigent status?</label>
+												<div>
+													<input type="radio" name="indigent_status" value="Yes" required> Yes
+													<input type="radio" name="indigent_status" value="No" required> No
+												</div>
+											</div>
+											<div class="mb-3">
+												<label class="form-label">Are you living with family?</label>
+												<div>
+													<input type="radio" name="family_living" value="Yes" required> Yes
+													<input type="radio" name="family_living" value="No" required> No
+												</div>
+											</div>
+											<div class="mb-3">
+												<label class="form-label">If not, with whom are you living?</label>
+												<input type="text" class="form-control" name="living_with">
+											</div>
+											<div class="mb-3">
+												<label class="form-label">Number of people in household</label>
+												<input type="number" class="form-control" name="household_size" min="1" required>
+											</div>
+											<div class="mb-3">
+												<label class="form-label">Name of Senior High School</label>
+												<input type="text" class="form-control" name="school_name" required>
+											</div>
+											<div class="mb-3">
+												<label class="form-label">Address of School</label>
+												<input type="text" class="form-control" name="school_address" required>
+											</div>
+											<div class="mb-3">
+												<label class="form-label">General Average at Last Attended School</label>
+												<input type="number" class="form-control" name="general_average" step="0.01" min="0" max="100" required>
+											</div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" required="">
                                             <label class="form-check-label" for="defaultCheck1">

@@ -124,16 +124,16 @@ include("connection.php");
 										<div class="mb-3">
 											<label class="form-label">Password</label>
 											<input class="form-control form-control-lg" type="password" name="password" required placeholder="Enter your password" />
-										<small>
-											<a href="forgetpassword.php">Forgot password?</a>
-										</small>
-										</div>
+									<small>
+										<a href="forgetpassword.php">Forgot password?</a>
+									</small>
+									</div>
 								
 									
 										<div class="text-center mt-3">
-											<input type="submit"  class="btn btn-lg btn-primary" Value="Sign in" name="login" style="background-color: #297506; border-color: border-color: coral;"></br>
+											<input type="submit"  class="btn btn-lg btn-primary" Value="Sign in" name="login" ></br>
 											<!-- <button type="submit" class="btn btn-lg btn-primary">Sign in</button> -->
-											Don't Have an account? Signup <a href="signUp.php">here.</a>
+										
 										</div>
 									</form>
 								</div>
