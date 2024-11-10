@@ -46,32 +46,8 @@ if(isset($_POST['create'])){
 
 <body>
 	<div class="wrapper">
-		<nav id="sidebar" class="sidebar js-sidebar">
-			<div class="sidebar-content js-simplebar">
-				<a class="sidebar-brand" href="index.php">
-          <span class="align-middle">Welcome Iskolar</span>
-        </a>
-				<ul class="sidebar-nav">
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="logout.php">
-              <i class="align-middle" data-feather="log-in"></i> <span class="align-middle">Logout</span>
-            </a>
-					</li>
-                 
-		
-				</ul>
 
-		
-			</div>
-		</nav>
-		<div class="main">
-			<nav class="navbar navbar-expand navbar-light navbar-bg">
-				<a class="sidebar-toggle js-sidebar-toggle">
-          <i class="hamburger align-self-center"></i>
-        </a>
-
-				
-			</nav>
+	
 
 			<main class="content" style="background:url('../assets/StepByStep_regBg.png'); background-repeat: no-repeat;
   background-size:  120%;">

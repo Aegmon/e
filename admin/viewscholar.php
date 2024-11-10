@@ -3,7 +3,6 @@
 include("sidebar.php");
 $id = $_GET['stud_num'];
 $info_qry = "SELECT * from scholarinfo t1
-join userdata t5
 on t5.userID = t1.userID
 join mother t2
 on t1.scholarID = t2.scholarID
@@ -18,7 +17,6 @@ $lname = $info['LastName'];
 $studnum = $info['stud_num'];
 $address = $info['address'];
 $number = $info['number'];
-$userID = $info['userID'];
 $rel_stat = $info['rel_stat'];
 $yr_lvl = $info['yr_lvl'];
 $course = $info['course'];

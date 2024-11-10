@@ -2,23 +2,7 @@
 include('../connection.php');
 $user_check = $_GET['scholarID'];
 
-// if(isset($_POST['create'])){
-//         $fname = $con->real_escape_string($_POST['fname']);
-// 		$lname = $con->real_escape_string($_POST['lname']);
-// 		$number = $con->real_escape_string($_POST['number']);
-// 		$dob = $con->real_escape_string($_POST['dob']);
-// 		$rel = $con->real_escape_string($_POST['rel']);
-//         $con->query("INSERT INTO `guardian`(`gfname`, `glname`, `scholarID`, `rel`, `number`, `dob`) VALUES 
-//         ('$fname','$lname','$user_check','$rel','$number','$dob')");
-//         $info_qry = "SELECT * from scholarinfo where scholarID='$user_check'";
-//         $info_ses = mysqli_query($con,$info_qry);
-//         $info = mysqli_fetch_assoc($info_ses);
-//         $infoid = $info['scholarID'];
-//         // $con->query("UPDATE `userdata` SET verification='1'");
-//         // echo '<script type="text/javascript">alert("Register Successful");
-//         //         window.location = ".php";</script>';
-//         header("location: requirements.php?scholarID=".$infoid);
-// }
+
 if(isset($_POST['create'])){
 
  
@@ -105,32 +89,9 @@ if(isset($_POST['create'])){
 
 <body>
 	<div class="wrapper">
-		<nav id="sidebar" class="sidebar js-sidebar">
-			<div class="sidebar-content js-simplebar">
-				<a class="sidebar-brand" href="index.php">
-          <span class="align-middle">Welcome Iskolar</span>
-        </a>
-				<ul class="sidebar-nav">
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="logout.php">
-              <i class="align-middle" data-feather="log-in"></i> <span class="align-middle">Logout</span>
-            </a>
-					</li>
-                 
-		
-				</ul>
-
-		
-			</div>
-		</nav>
+	
 		<div class="main">
-			<nav class="navbar navbar-expand navbar-light navbar-bg">
-				<a class="sidebar-toggle js-sidebar-toggle">
-          <i class="hamburger align-self-center"></i>
-        </a>
-
-				
-			</nav>
+	
 
 			<main class="content">
 				<div class="container-fluid p-0">

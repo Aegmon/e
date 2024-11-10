@@ -103,8 +103,8 @@ include("connection.php");
 					<div class="d-table-cell align-middle mb-50">
 
 					<video autoplay muted loop id="background-video">
-  <source src="./assets/mayor video.mp4" type="video/mp4">
-</video>
+						<source src="./assets/mayor video.mp4" type="video/mp4">
+						</video>
 
 						<div class="card">
 							<div class="card-body">
@@ -124,10 +124,10 @@ include("connection.php");
 										<div class="mb-3">
 											<label class="form-label">Password</label>
 											<input class="form-control form-control-lg" type="password" name="password" required placeholder="Enter your password" />
-		  <small>
-            <a href="forgetpassword.php">Forgot password?</a>
-          </small>
-        </div>
+										<small>
+											<a href="forgetpassword.php">Forgot password?</a>
+										</small>
+										</div>
 								
 									
 										<div class="text-center mt-3">
