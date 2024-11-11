@@ -29,9 +29,8 @@ $cur_page = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+
 
 
 
-	<title>ASEEST</title>
+	<title>San Miguel Scholars</title>
 <link href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" rel="stylesheet">
-
 <link href="css/app.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel="stylesheet">
@@ -86,11 +85,11 @@ active{
 
 <body>
 	<div class="wrapper">
-		<nav id="sidebar" class="sidebar js-sidebar" style="background: #2B7A0B; !important">
+		<nav id="sidebar" class="sidebar js-sidebar" >
 			<div class="sidebar-content js-simplebar">
 			<a class="sidebar-brand" href="index.php">
 			<div class="text-center">
-		<img src="../assets/SMG LOGO.png" class="img-fluid rounded-circle" width="250" height="250" />
+		<img src="#" class="img-fluid rounded-circle" width="250" height="250" />
 	        </div>
         </a>
 
@@ -100,7 +99,7 @@ active{
 
 				<ul class="sidebar-nav">
 				<li class="sidebar-item <?php if( ($cur_page == 'index.php') ) {echo 'active ';} ?> ">
-						<a class="sidebar-link" href="index.php">
+						<a class="sidebar-link" href="home.php">
               <i class="align-middle" style="color:#ffff;"data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
             </a>
 					</li>
@@ -114,15 +113,15 @@ active{
 					</li>
 
 					
-						<li class="sidebar-item <?php if( ($cur_page == 'casestudy.php') ) {echo 'active ';} ?>">
-						<a class="sidebar-link" href="casestudy.php">
-              <i class="align-middle" data-feather="settings" style="color:#ffff;"></i> <span class="align-middle">Case Study Report</span>
+					
+					<li class="sidebar-item <?php if( ($cur_page == 'record.php') ) {echo 'active ';} ?>">
+						<a class="sidebar-link" href="record.php">
+              <i class="align-middle" data-feather="users" style="color:#ffff;"></i> <span class="align-middle">Records Management</span>
             </a>
-					</li> 
+					</li>
 				
 				
 			
-				
 
 					<li class="sidebar-item <?php if( ($cur_page == 'adminsettings.php') ) {echo 'active ';} ?>">
 						<a class="sidebar-link" href="adminsettings.php">

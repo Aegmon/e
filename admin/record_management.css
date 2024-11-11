@@ -1,0 +1,419 @@
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    background: #f3f3f3;
+}
+
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+/* Sidebar styles */
+.sidebar {
+    height: 100%;
+    width: 300px; /* Default width when expanded */
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    transition: width 0.5s; /* Smooth transition for width */
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Sidebar logo */
+#logo {
+    width: 80px;
+    height: 80px;
+    margin-left: 6rem;
+    margin-bottom: 30px;
+}
+
+/* Sidebar items */
+.sidebar-item {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    padding: 20px 15px;
+    text-align: left;
+    font-size: 20px;
+    transition: margin 0.3s, font-size 0.3s; /* Smooth transition for background, margins, and font size */
+    color: #1D169D;
+    font-weight: 500;
+}
+
+/* Larger font size for dashboard menu */
+#dashboard-menu {
+    padding-bottom: 25px;
+    font-size: 25px;
+}
+
+/* Hover and active states for sidebar items */
+.sidebar-item:hover, .sidebar-item:active {
+    background: #879df4;
+    border-radius: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    color: white;
+}
+
+/* Logout button */
+.logout {
+    font-size: 22px;
+    text-align: center;
+    margin: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: black;
+    padding: 10px;
+    font-weight: 500;
+}
+
+/* Hover and active states for logout button */
+.logout:hover, .logout:active {
+    background: #e0e0e0;
+    border-radius: 10px;
+    margin-left: 80px;
+    margin-right: 80px;
+}
+
+/* Material Symbols font settings */
+.material-symbols-rounded {
+    font-size: 24px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+.sidebar.minimized .sidebar-item:hover, .sidebar.minimized #logoutButton:hover, .sidebar.minimized #dashboard-menu:hover {
+    background: #879df4;
+    color: white;
+    border-radius: 20px 0 0 20px;
+    margin-left: 15px;
+    padding-left: 15px;
+    margin-right: 0;
+}
+
+/* Minimized sidebar styles */
+.sidebar.minimized {
+    width: 100px; /* Width when minimized */
+    transition: margin 0.1s, font-size 0.1s;
+}
+
+/* Minimized state styles for sidebar items */
+.sidebar.minimized .sidebar-item {
+    padding: 20px 0; /* Adjust padding when minimized */
+    font-size: 0; /* Hide text */
+    overflow: hidden; /* Hide any overflow */
+    margin-left: 25px;
+    margin-top: 20px;
+}
+
+/* Minimized state styles for logout button */
+.sidebar.minimized .logout {
+    margin: 30px 20px; /* Adjust margins when minimized */
+    font-size: 0; /* Hide text */
+    margin-left: 25px;
+}
+
+.sidebar.minimized #dashboard-menu {
+    margin-bottom: 0;
+    font-size: 0;
+}
+
+.sidebar.minimized .logout {
+    text-align: left;
+    display: flex;
+    align-items: left;
+    margin: 0;
+    margin-left: 10px;
+    margin-top: 60px;
+}
+
+.sidebar.minimized hr {
+    display: none;
+}
+
+.sidebar.minimized #logo {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 30px;
+    margin: 0;
+    margin-left: 18px;
+}
+
+/* Minimized state styles for icons */
+.sidebar.minimized .material-symbols-rounded {
+    font-size: 30px;
+}
+
+/* Menu button styles */
+.menu-btn {
+    font-size: 25px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: black;
+    padding: 10px;
+    margin-left: 15px;
+}
+
+.menu-btn:hover {
+    background: #f3f3f3;
+    border-radius: 50%;
+}
+
+
+#main {
+    width: calc(100% - 300px); 
+    margin-left: 300px; 
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.header {
+    background-color: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    height: 60px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    position: relative; /* Ensure the shadow is visible and not clipped */
+}
+
+.header-container {
+    margin-left: 10px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#recordmgmt-text {
+    font-size: 25px;
+}
+
+.right-items {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.right-items:hover {
+    transform: scale(1.05); 
+}
+
+.name {
+    margin-right: 15px; 
+    cursor: pointer;
+    padding: 10px;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+.profile {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.profile .material-symbols-rounded {
+    font-size: 30px;
+}
+
+.record_mgmt {
+    overflow-y: auto;
+}
+
+.content-area {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+    background-color: #f3f3f3;
+}
+
+.underlined-text {
+    font-size: 18px; /* Adjust font size as needed */
+    font-weight: bold; /* Make text bold */
+    text-decoration: underline; /* Underline the text */
+    margin: 5px 0; /* Add some margin above and below the text */
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+}
+
+.action-button {
+    padding: 5px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 40px;
+    background-color: #2F27CE; /* Blue background */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+}
+
+.action-button:hover {
+    background-color: #0d0b7a; /* Darker background on hover */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow on hover */
+}
+
+.action-button:focus {
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Custom focus style */
+}
+
+.icon-button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 0; /* Remove any extra spacing */
+    transition: transform 0.2s ease;
+}
+
+.icon-button:hover {
+    transform: scale(1.1); /* Slightly increase size on hover */
+}
+
+.icon-button .material-symbols-rounded {
+    font-size: 50px; /* Icon size */
+    color: #1d169d; /* Blue color */
+    vertical-align: middle; /* Align with text */
+}
+
+.content-area {
+    display: flex;
+    flex-direction: column; /* Change to column for stacking elements vertically */
+    flex: 1;
+    overflow: hidden;
+    padding: 20px;
+    background-color: #f3f3f3;
+}
+
+.underlined-text {
+    font-size: 24px; /* Adjust font size as needed */
+    font-weight: bold; /* Make text bold */
+    text-decoration: underline; /* Underline the text */
+    margin: 10px 0; /* Add some margin above and below the text */
+}
+
+/* Container for all select elements */
+.selection-container {
+    display: flex;
+    gap: 1px; /* Space between each selection box */
+    flex-wrap: wrap; /* Wrap to the next line if there is not enough space */
+    width: 100%; /* Take up all available space */
+    margin-top: 5px;
+    padding-left: 30px;
+}
+
+/* Individual selection boxes */
+.selection {
+    flex: 1; /* Allow the selection boxes to expand */
+    min-width: 150px; /* Minimum width for each selection box */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center align items horizontally */
+    margin-bottom: 10px; /* Space below each selection box */
+    margin-right: 70px;
+}
+
+/* Style the label to be centered above the select element */
+.selection label {
+    margin-bottom: 5px; /* Space between label and select */
+    text-align: center; /* Center align text */
+    width: 100%; /* Ensure the label takes full width of the selection box */
+    font-weight: 600;
+}
+
+/* Style the select element */
+.selection input {
+    font-size: 16px;
+    padding: 10px; /* Padding inside the select box */
+    border: 2px solid black;
+    border-radius: 4px;
+    width: 100%; /* Make select take full width of its container */
+    font-weight: 400;
+}
+
+#sortInput {
+    margin-top: 20px;
+    font-weight: 600;
+    font-style: normal;
+}
+
+.selection input:focus {
+    border-color: #1D169D;
+    outline: none;
+    border-width: 2px;
+    background-color: #d5deff;
+}
+
+datalist {
+    background-color: #ccc;
+    color: #333;
+}
+
+.record-container {
+    margin-top: 30px;
+}
+
+.box-container {
+    display: flex;
+    flex-direction: column;
+    height: 600px; 
+    max-height: 1000px;
+    overflow-y: auto;
+    background-color: white; 
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    flex: 1;
+    width: auto;
+}
+
+table {
+    width: 100%; 
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px; 
+    text-align: left; 
+    border-bottom: 1px solid #ddd;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+th {
+    font-weight: bold; 
+    font-size: 14px;
+}
+
+tr:hover {
+    background-color: #f5f5f5; 
+}
+
+#s-name {
+    padding-right: 100px;
+}

@@ -59,8 +59,7 @@ if(isset($_POST['reset'])){
 }
 ?>
 
-		<div class="main" style="background:url('../assets/user_bg.png');
-  background-size:  100%;">
+		<div class="main" >
 			<nav class="navbar navbar-expand navbar-light navbar-bg">
 				<a class="sidebar-toggle js-sidebar-toggle">
           <i class="hamburger align-self-center"></i>

@@ -1,34 +1,47 @@
 <?php
-include("sidebar.php"); // Include the sidebar (which has the $con connection)
+include('session.php');
+
 ?>
 
-<div class="main">
-    <nav class="navbar navbar-expand navbar-light navbar-bg">
-        <a class="sidebar-toggle js-sidebar-toggle">
-            <i class="hamburger align-self-center"></i>
-        </a>
-    </nav>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eligibility Assessment</title>
+    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap' rel='stylesheet'>
+    <link rel="stylesheet" href="eligibility_assessment.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@40,400,0,0">
+</head>
 
-    <main class="content" >
-        <div class="container-fluid p-0">
-            <div class="row">
-                <div class="col-12 col-lg-12 col-xxl-12 d-flex">
-                    <div class="card flex-fill p-2">
-                        <div class="card-header">
-                            <!-- Nav tabs for Eligible and Uneligible -->
-                            <ul class="nav nav-tabs" id="eligibilityTabs" role="tablist">
-                                <li class="nav-item" role="presentation">
-                                    <a class="nav-link active" id="eligible-tab" data-bs-toggle="tab" href="#eligible" role="tab" aria-controls="eligible" aria-selected="true">Eligible</a>
-                                </li>
-                                <li class="nav-item" role="presentation">
-                                    <a class="nav-link" id="uneligible-tab" data-bs-toggle="tab" href="#uneligible" role="tab" aria-controls="uneligible" aria-selected="false">Uneligible</a>
-                                </li>
-                            </ul>
-                        </div>
+<body>
+    <div class="sidebar" id="mySidebar">
+        <img id="logo" src="images/website_logo.png" alt="Logo">
+        <a href="dashboard.html" class="sidebar-item" id="dashboard-menu"><span class="material-symbols-rounded">grid_view</span>Dashboard</a>
+        <hr>
+        <a href="casestudy.html" class="sidebar-item"><span class="material-symbols-rounded">assignment_ind</span>Case Study Report</a>
+        <a href="eligibility_assessment.html" class="sidebar-item"><span class="material-symbols-rounded">event_list</span>Eligibility Assessment</a>
+        <a href="record_management.html" class="sidebar-item"><span class="material-symbols-rounded">folder_supervised</span>Record Management</a>
+        <a href="#" class="logout" id="logoutButton"><span class="material-symbols-rounded">logout</span>Logout</a>
+    </div>
 
-                        <div class="card-body">
-                            <!-- Tab content -->
-                            <div class="tab-content" id="eligibilityTabsContent">
+    <div id="main">
+        <div class="header"> 
+            <button id="menuToggle" class="menu-btn" onclick="toggleSidebar()">&#9776;</button>
+            <div class="header-container">
+                <h1 id="eligib-text">Eligibility Assessment</h1>
+                <div class="right-items">
+                    <div class="profile"><span class="material-symbols-rounded">account_circle</span></div>
+                    <h3 class="name" id="name">Maria Leonora Teresa</h3>
+                </div>
+            </div>
+        </div>
+
+        <section class="eligib_content">
+            <div class="content-area">
+                <div class="box-container">
+                    <div class="assessment">
+                          <div class="tab-content" id="eligibilityTabsContent">
                                 <!-- Eligible Tab -->
                                 <div class="tab-pane fade show active" id="eligible" role="tabpanel" aria-labelledby="eligible-tab">
                                     <table class="table p-2" id="filterTableEligible">
@@ -68,7 +81,6 @@ include("sidebar.php"); // Include the sidebar (which has the $con connection)
                                                 <td style="text-align: center;"><?php echo $email;?></td>
                                                 <td style="text-align: center;">
                                                     <button class="btn btn-info" data-toggle="modal" data-target="#interviewModal<?php echo $rowid; ?>">Interview</button>
-                                                      <a class="btn btn-primary" href="casestudy.php?applicant_id=<?php echo $rowid ?>">Case Study Report</a>
                                                 </td>
                                             </tr>
 
@@ -176,19 +188,15 @@ include("sidebar.php"); // Include the sidebar (which has the $con connection)
                                     </table>
                                 </div>
                             </div>
-                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </main>
-</div>
 
-<script src="js/app.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#filterTable").DataTable();
-        $("#filterTableEligible").DataTable();
-        $("#filterTableUneligible").DataTable();
-    });
-</script>
+
+            </div>
+        </section>
+
+    </div>
+
+    <script src="eligibility_assessment.js"></script>
+</body>
+</html>

@@ -1,265 +1,125 @@
 <?php
-include("sidebar.php"); // Include the sidebar (which has the $con connection)
+include('../connection.php');
 
-// Example of fetching counts from the database
-$eligibleCount = getCount('eligible');  
-$ineligibleCount = getCount('ineligible'); 
-$fullScholarCount = getCount('full_scholar');
-$grantLevel1Count = getCount('grant_level_1');
-$grantLevel2Count = getCount('grant_level_2');
+session_start();
+if (isset($_POST['login'])) {
+    $email = $con->real_escape_string($_POST['email']);
+    $password = $con->real_escape_string($_POST['password']);
 
-// Function to fetch count for a specific status
-function getCount($status) {
-    global $con; 
-    $query = "SELECT COUNT(*) FROM applicants WHERE status = '$status'";
-    $result = mysqli_query($con, $query);
-    
-    // Check for query errors
-    if (!$result) {
-        die("Query failed: " . mysqli_error($con));
+    if ($email == "" || $password == "") {
+        echo '<script type="text/javascript">alert("Check your inputs");</script>';
+    } else {
+        $query = "SELECT * FROM userdata WHERE Email='$email'";
+        $ses_sql = mysqli_query($con, $query);
+
+        if ($ses_sql && mysqli_num_rows($ses_sql) > 0) {
+            $row = mysqli_fetch_assoc($ses_sql);
+            $sql1 = $row['Password'];
+            $sql2 = $row['userRole'];
+            $sql3 = $row['verification'];
+            $sql4 = $row['userID'];
+
+            if (password_verify($password, $sql1)) {
+                $_SESSION['login_user'] = $email;
+
+                switch ($sql2) {
+                    case 'Scholar':
+                        if ($sql3 == '1') {
+                            header("location: ./isko/index.php");
+                        } elseif ($sql3 == '2') {
+                            header("location: ./isko/personalinfo.php?userID=$sql4");
+                        } else {
+                            echo '<script type="text/javascript">alert("Please Verify your email");</script>';
+                        }
+                        break;
+
+                    case 'Admin':
+                        $log = "Admin Login";
+                        $con->query("INSERT INTO `logs`(`logs`) VALUES ('$log')");
+                        header("location: home.php");
+                        break;
+
+                    case 'Superadmin':
+                        header("location: ./superadmin/index.php");
+                        break;
+                }
+            } else {
+                echo '<script type="text/javascript">alert("Check your inputs");</script>';
+            }
+        } else {
+            echo '<script type="text/javascript">alert("User not found");</script>';
+        }
     }
-
-    $count = mysqli_fetch_assoc($result)['COUNT(*)'];
-    return $count;
 }
 ?>
 
-		<div class="main">
-			<nav class="navbar navbar-expand navbar-light navbar-bg">
-				<a class="sidebar-toggle js-sidebar-toggle">
-          <i class="hamburger align-self-center"></i>
-        </a>
 
-				
-			</nav>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-			<main class="content" style="background:url('../assets/pubmatfour.png'); background-repeat: no-repeat;
-  background-size:  100%;">
-				<div class="container-fluid p-0">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
 
-					
-					<div class="row">
-				    	<div class="col-12 col-lg-12 col-xxl-12 d-flex">
-							<div class="card flex-fill">
-								<div class="card-header">
-                            <div class="row">
-<div class="row">
-    <!-- Eligible Count -->
-    <div class="col-sm-4">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col mt-0">
-                        <h5 class="card-title">Eligible</h5>
+    <script src="https://kit.fontawesome.com/2625a4d18c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="loginStyleAdmin.css">
+    <title>Login</title>
+</head>
+<body>
+    
+    <div class="back">
+
+    </div>
+
+    <div class="wrapper">
+        <div class="form-container">
+            <h1>Admin Login</h1>
+            <div class="form-box">
+                   <form action="<?php echo $_SERVER['PHP_SELF']; ?>" id="form" method="post">
+                    <div class="input-field"> 
+                        <label for="email">Email</label>
+                        <input type="text" name="email" id="email" placeholder="Email or Username">
+                        <small id="email-error">Error</small>
+                        <i class="fa-solid fa-circle-check"></i>
+                        <i class="fa-solid fa-circle-exclamation"></i>
                     </div>
-                    <div class="col-auto">
-                        <div class="stat text-primary">
-                            <i class="align-middle" data-feather="check-circle"></i>
-                        </div>
+                    
+                    <div class="input-field">
+                        <label for="password">Password</label>
+                        
+                        <input type="password" name="password" id="password" autocomplete="off" placeholder="Password">
+                        
+                        <small id="password-error">Error</small>
+                        <i class="fa-solid fa-circle-check"></i>
+                        <i class="fa-solid fa-circle-exclamation"></i>
                     </div>
-                </div>
-                <h1 class="mt-1 mb-3"><?php echo $eligibleCount; ?></h1>
+                    
+                   
+
+                    <div class="option_div">
+                        <label class="checkbox">
+                            <input type="checkbox">
+                            <span class="check">Remember Me</span>
+                        </label>
+                        <a href="forgotpass.html" title="Forgot Password" id="link-reset">Forgot Password?</a>
+                    </div>
+
+                    <div class="input-field">
+                        <button type="submit" name="login">Login</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Ineligible Count -->
-    <div class="col-sm-4">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col mt-0">
-                        <h5 class="card-title">Ineligible</h5>
-                    </div>
-                    <div class="col-auto">
-                        <div class="stat text-danger">
-                            <i class="align-middle" data-feather="x-circle"></i>
-                        </div>
-                    </div>
-                </div>
-                <h1 class="mt-1 mb-3"><?php echo $ineligibleCount; ?></h1>
-            </div>
-        </div>
-    </div>
+    
 
-    <!-- Full Scholar Count -->
-    <div class="col-sm-4">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col mt-0">
-                        <h5 class="card-title">Full Scholar</h5>
-                    </div>
-                    <div class="col-auto">
-                        <div class="stat text-success">
-                            <i class="align-middle" data-feather="award"></i>
-                        </div>
-                    </div>
-                </div>
-                <h1 class="mt-1 mb-3"><?php echo $fullScholarCount; ?></h1>
-            </div>
-        </div>
-    </div>
-
-    <!-- Grant Level 1 Count -->
-    <div class="col-sm-4">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col mt-0">
-                        <h5 class="card-title">Grant Level 1</h5>
-                    </div>
-                    <div class="col-auto">
-                        <div class="stat text-warning">
-                            <i class="align-middle" data-feather="award"></i>
-                        </div>
-                    </div>
-                </div>
-                <h1 class="mt-1 mb-3"><?php echo $grantLevel1Count; ?></h1>
-            </div>
-        </div>
-    </div>
-
-    <!-- Grant Level 2 Count -->
-    <div class="col-sm-4">
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col mt-0">
-                        <h5 class="card-title">Grant Level 2</h5>
-                    </div>
-                    <div class="col-auto">
-                        <div class="stat text-info">
-                            <i class="align-middle" data-feather="award"></i>
-                        </div>
-                    </div>
-                </div>
-                <h1 class="mt-1 mb-3"><?php echo $grantLevel2Count; ?></h1>
-            </div>
-        </div>
-    </div>
-</div>
-
-								  <div class="row">
-								  <div class="col-12 col-lg-6">
-							<div class="card">
-								<div class="card-header">
-									<h5 class="card-title">Bar Chart</h5>
-								
-								
-								</div>
-								<div class="card-body">
-									<div class="chart">
-										<canvas id="chartjs-bar"></canvas>
-									</div>
-								</div>
-							</div>
-						 </div>
-								  <div class="col-12 col-lg-6">
-							<div class="card">
-								<div class="card-header">
-									<h5 class="card-title">Doughnut Chart</h5>
-								
-								</div>
-								<div class="card-body">
-									<div class="chart chart-sm">
-										<canvas id="chartjs-doughnut"></canvas>
-									</div>
-								</div>
-							</div>
-						</div>
-								</div>
-								</div>
-
-
-								
-
-
-
-								</div>
-                            </div>
-						</div>
-					</div>
-
-				</div>
-			</main>
-
-		</div>
-	</div>
-	<script>
-		$(document).ready(function () {
-    $('#example').DataTable();
-});
-	document.addEventListener("DOMContentLoaded", function() {
-    // Doughnut chart
-    new Chart(document.getElementById("chartjs-doughnut"), {
-        type: "doughnut",
-        data: {
-            labels: ["Eligible", "Ineligible", "Full Scholarship", "Grant Level 1", "Grant Level 2"],
-            datasets: [{
-                data: [
-                    <?php echo $eligible; ?>, 
-                    <?php echo $ineligible; ?>, 
-                    <?php echo $full_scholarship; ?>, 
-                    <?php echo $grant_level_1; ?>, 
-                    <?php echo $grant_level_2; ?>
-                ],
-                backgroundColor: [
-                    window.theme.primary,
-                    window.theme.success,
-                    window.theme.warning,
-                    window.theme.info,
-                    window.theme.danger
-                ],
-                borderColor: "transparent"
-            }]
-        },
-        options: {
-            maintainAspectRatio: false,
-            cutoutPercentage: 65,
-            legend: {
-                display: false
-            }
-        }
-    });
-});
-
-	</script>
-       
-	  <?php 
-	 
-	 ?>
-	<script>
-		document.addEventListener("DOMContentLoaded", function() {
-			// Doughnut chart
-			new Chart(document.getElementById("chartjs-doughnut"), {
-				type: "doughnut",
-				data: {
-					labels: ["Bulualto","Balite","Balaong","Biclat", 0, 0, 0, 0, 0, 0, 0, 0],
-					datasets: [{
-						data: [1, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
-														,
-						backgroundColor: [
-							window.theme.primary,
-							window.theme.success,
-							window.theme.warning
-							
-						],
-						borderColor: "transparent"
-					}]
-				},
-				options: {
-					maintainAspectRatio: false,
-					cutoutPercentage: 65,
-					legend: {
-						display: false
-					}
-				}
-			});
-		});
-	</script>
-	<script src="js/app.js"></script>
 
 </body>
-
 </html>

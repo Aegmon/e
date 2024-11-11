@@ -1,0 +1,185 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.wrapper{
+    width: 100%;
+    height: 100vh;
+    padding: 15px;
+   
+    /* background: #2d5cbb;
+    background: linear-gradient(339deg, #2d5cbb 50%, #ffffff 0%); */
+}
+
+ .form-container{
+    width: 450px;
+    padding: 20px 0;
+    background-color: #fff;
+    margin: 25px auto;
+    position: relative;
+    border-radius: 25px 25px 20px 20px;
+    box-shadow: #0000001a 0px 4px 12px;
+} 
+
+.form-container::before{
+    content: "";
+    top: 0;
+    position: absolute;
+    width: 100%;
+    height: 40%;
+    border-radius: 20px 20px 35% 35%;
+    background: #3b57ff;
+}
+.form-container h1{
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    margin-top: 5%;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.form-box{
+    width: 90%;
+    background-color: #fff;
+    position: relative;
+    z-index: 1;
+    box-shadow: #11111a0d 0px 1px 0px, #11111a1a 0px 0px 8px;
+    border-radius: 15px;
+    margin: auto;
+    margin-top: 100px;
+    padding: 15px;
+}
+
+.form-box form{
+    margin-top: 30px;
+}
+
+.form-box .input-field{
+    position: relative;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.form-box .input-field label{
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 25px;
+    color: black;
+}
+
+.form-box .input-field input{
+    width: 100%;
+    height: 45px;
+    padding: 0 30px 0 10px;
+    border-radius: 8px;
+    font-weight: 400;
+    font-size: 16px;
+    border: 1px solid #3b57ff;
+    outline: none;
+}
+
+.form-box .input-field input::placeholder{
+    font-size: 17px;
+    font-weight: 500px;
+    color: #c8c8c8;
+    line-height: 50px;
+}
+
+.form-box .input-field.success input{
+    border-color: #2ecc71;
+}
+
+.form-box .input-field.error input{
+    border-color: #e74c3c;
+}
+
+.input-field small{
+    color: #e74c3c;
+    display: inline;
+    margin: 5px 5px 0 5px;
+    visibility: hidden;
+}
+
+.input-field.error small{
+    visibility: visible;
+}
+
+.form-box .input-field i{
+    display: inline-block;
+    position: absolute;
+    top: calc(50% - 6px);
+    right: 10px;
+    visibility: hidden;
+}
+
+.form-box .input-field.success i.fa-circle-check{
+    color: #2ecc71;
+    visibility: visible;
+}
+
+.form-box .input-field.error i.fa-circle-exclamation{
+    color: #e74c3c;
+    visibility: visible;
+}
+
+.form-box .input-field button{
+    width: 100%;
+    height: 45px;
+    background-color: #2d5cbb;
+    color: #fff;
+    outline: none;
+    border: none;
+    font-size: 17px;
+    font-weight: 600;
+    box-shadow: #64646f33 0px 7px 29px 0px;
+    border-radius: 40px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: all 0.5s ease;
+}
+
+.form-box .input-field button:hover{
+    opacity: 0.8;
+}
+
+.back {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+.back_btn {
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    padding: 10px;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.back_btn i {
+    color: #333;
+}
+
+.note {
+    font-size: 12px;
+    color: red;
+    text-align: center;
+}
+
+.option_div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.link-reset {
+    font-size: 12px;
+    text-decoration: underline;
+    color: #333;
+}

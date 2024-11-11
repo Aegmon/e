@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Management</title>
+    <link href='https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap' rel='stylesheet'>
+    <link rel="stylesheet" href="record_management.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@40,400,0,0">
+</head>
+
+<body>
+    <div class="sidebar" id="mySidebar">
+        <img id="logo" src="images/website_logo.png" alt="Logo">
+        <a href="dashboard.html" class="sidebar-item" id="dashboard-menu">
+            <span class="material-symbols-rounded">grid_view</span>Dashboard
+        </a>
+        <hr>
+        <a href="casestudy.html" class="sidebar-item">
+            <span class="material-symbols-rounded">assignment_ind</span>Case Study Report
+        </a>
+        <a href="eligibility_assessment.html" class="sidebar-item">
+            <span class="material-symbols-rounded">event_list</span>Eligibility Assessment
+        </a>
+        <a href="record_management.html" class="sidebar-item">
+            <span class="material-symbols-rounded">folder_supervised</span>Record Management
+        </a>
+        <a href="#" class="logout" id="logoutButton">
+            <span class="material-symbols-rounded">logout</span>Logout
+        </a>
+    </div>
+
+    <div id="main">
+        <div class="header"> 
+            <button id="menuToggle" class="menu-btn" onclick="toggleSidebar()">&#9776;</button>
+            <div class="header-container">
+                <h1 id="recordmgmt-text">Record Management</h1>
+                <div class="right-items">
+                    <div class="profile"><span class="material-symbols-rounded">account_circle</span></div>
+                    <h3 class="name" id="name">Maria Leonora Teresa</h3>
+                </div>
+            </div>
+        </div>
+
+        <section class="record_mgmt">
+            <div class="content-area">
+                <div class="header-content">
+                    <span class="underlined-text">Scholars</span>
+                    <div class="button-group">
+                        <button id="searchButton" class="icon-button">
+                            <span class="material-symbols-rounded">manage_search</span>
+                        </button>
+                        <button id="printAllButton" class="action-button">Print All</button>
+                    </div>
+                </div>
+            
+                <div class="selection-container">
+                    <div class="selection-container">
+                        <div class="selection">
+                            <label for="nameInput">Name</label>
+                            <input id="nameInput" list="nameOptions" name="nameInput" placeholder="All names">
+                            <datalist id="nameOptions">
+                                <option value="All names">
+                                <option value="John Doe">
+                                <option value="Jane Doe">
+                                <option value="Alice Smith">
+                                <option value="Bob Johnson">
+                            </datalist>
+                        </div>
+                        
+                        <div class="selection">
+                            <label for="yearInput">Academic Year</label>
+                            <input id="yearInput" list="yearOptions" name="yearInput" placeholder="All academic years">
+                            <datalist id="yearOptions">
+                                <option value="All years">
+                                <option value="2023-2024">
+                                <option value="2022-2023">
+                                <option value="2022-2021">
+                                <option value="2021-2020">
+                            </datalist>
+                        </div>
+                        
+                        <div class="selection">
+                            <label for="semInput">Semester</label>
+                            <input id="semInput" list="semOptions" name="semInput" placeholder="All semesters">
+                            <datalist id="semOptions">
+                                <option value="All semesters">
+                                <option value="1st Semester">
+                                <option value="2nd Semester">
+                            </datalist>
+                        </div>
+                        
+                        <div class="selection">
+                            <label for="scholarshipInput">Scholarship Type</label>
+                            <input id="scholarshipInput" list="scholarshipOptions" name="scholarshipInput" placeholder="All scholarship types">
+                            <datalist id="scholarshipOptions">
+                                <option value="All scholarship types">
+                                <option value="Full Scholar">
+                                <option value="Grantee Level 1">
+                                <option value="Grantee Level 2">
+                            </datalist>
+                        </div>
+                        
+                        <div class="selection">
+                            <label for="sortInput"></label>
+                            <input id="sortInput" list="sortOptions" name="sortInput" placeholder="Sort by...">
+                            <datalist id="sortOptions">
+                                <option value="Alphabetical Ascending">
+                                <option value="Alphabetical Descending">
+                            </datalist>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="record-container">
+                    <div class="box-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th id="id">#</th>
+                                    <th id="s-name">Name</th>
+                                    <th id="year">Academic Year</th>
+                                    <th id="sem">Semester</th>
+                                    <th id="contact">Contact Information</th>
+                                    <th id="type">Scholarship Type</th>
+                                    <th id="s-status">Scholarship Status</th>
+                                    <th id="p-status">Payout Status</th>
+                                    <th id="rog">ROG</th>
+                                    <th id="action">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Add table rows here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                
+
+
+
+
+
+            </div>
+        </section>
+    </div>
+
+    <script src="record_management.js"></script>
+</body>
+</html>
