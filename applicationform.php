@@ -35,55 +35,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $gen_average = mysqli_real_escape_string($con, $_POST['gen_average']);
     $contact_number = mysqli_real_escape_string($con, $_POST['contact_number']);
     $email_address = mysqli_real_escape_string($con, $_POST['email_address']);
+
+    // Run the Python script and get the output (i.e., generate the predictions.json file)
+    $command = escapeshellcmd("python3 app.py"); // Adjust the Python script filename if needed
+    shell_exec($command); // Execute the Python script
+
+    // Read the predictions.json file after Python script execution
+    $json_file = 'predictions_output.json';
+    $json_data = file_get_contents($json_file); // Read the file content
+    $decoded_data = json_decode($json_data, true); // Decode JSON to associative array
     
-    $documents = [];
-    if (isset($_FILES['documents'])) {
-        foreach ($_FILES['documents']['tmp_name'] as $key => $tmp_name) {
-            if ($_FILES['documents']['error'][$key] === UPLOAD_ERR_OK) {
-                $filename = basename($_FILES['documents']['name'][$key]);
-                $mime_type = $_FILES['documents']['type'][$key];
-                $data = file_get_contents($tmp_name);
+    // Initialize scholarship eligibility and type
+    $eligibility_status = 'Ineligible';
+    $scholar_type = 'No Scholarship';
 
-                // Mapping document names to titles
-                $document_titles = [
-                    'birth_cert' => 'Birth Certificate',
-                    'indigency_file' => 'Indigency Certificate',
-                    'good_moral' => 'Certificate of Good Moral',
-                    'form_137' => 'Form 137',
-                    'voters_id' => "Voter's ID of Parents"
-                ];
+    // Check eligibility based on GWA and income from JSON
+    foreach ($decoded_data as $person) {
+        if ($gen_average >= $person['GWA'] && 
+            (($father_income + $mother_income) >= $person['Income'])) {
+            
+            $eligibility_status = $person['Eligible']; // Set eligibility status from JSON data
 
-                $document_title = isset($document_titles[$key]) ? $document_titles[$key] : 'Unknown Document';
-
-                // Store document information
-                $documents[] = [
-                    'name' => $filename,
-                    'mime_type' => $mime_type,
-                    'data' => $data,
-                    'title' => $document_title
-                ];
+            // Determine scholarship type based on GWA
+            if ($gen_average >= 90 && $gen_average <= 100) {
+                $scholar_type = 'Full Scholarship';
+            } elseif ($gen_average >= 88 && $gen_average <= 89) {
+                $scholar_type = 'Grant Level 1';
+            } elseif ($gen_average >= 85 && $gen_average <= 87) {
+                $scholar_type = 'Grant Level 2';
             }
+            break; // Exit the loop once eligibility is determined
         }
     }
-    // Determine scholarship status and type
-    if (($gen_average >= 85 && $gen_average <= 100) && 
-        (($father_income >= 100 && $father_income <= 25000) || ($mother_income >= 100 && $mother_income <= 25000))) {
-        $status = 'Eligible';
-    } else {
-        $status = 'Ineligible';
-    }
 
-    if ($gen_average >= 90 && $gen_average <= 100) {
-        $scholarType = 'Full Scholarship';
-    } elseif ($gen_average >= 88 && $gen_average <= 89) {
-        $scholarType = 'Grant Level 1';
-    } elseif ($gen_average >= 85 && $gen_average <= 87) {
-        $scholarType = 'Grant Level 2';
-    } else {
-        $scholarType = 'No Scholarship';
-    }
-
-    // Insert applicant data into database
+    // Insert applicant data into the database
     $query = "INSERT INTO applicants (
                 last_name, first_name, middle_name, date_of_birth, citizenship, religion, contact_no, email,
                 gender, home_address, zip_code, civil_status, present_address, qualify, father_name, father_age,
@@ -95,15 +80,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 '$gender', '$home_address', '$zip_code', '$civil_status', '$present_address', '$qualify', '$father_name', '$father_age',
                 '$father_occupation', '$father_income', '$mother_name', '$mother_age', '$mother_occupation', '$mother_income',
                 '$parent_contact', '$living_with_family', '$living_with', '$num_household', '$senior_high_school', 
-                '$senior_high_school_address', '$gen_average', '$contact_number', '$email_address', '$status', '$scholarType'
+                '$senior_high_school_address', '$gen_average', '$contact_number', '$email_address', '$eligibility_status', '$scholar_type'
             )";
 
     // Execute the query to insert applicant data
-      if (mysqli_query($con, $query)) {
+    if (mysqli_query($con, $query)) {
         // Get the last inserted applicant_id
         $applicant_id = mysqli_insert_id($con);
 
-        // Insert documents into applicationForm table
+        // Insert documents into the applicationForm table (assuming documents are being handled)
         foreach ($documents as $doc) {
             $stmt = $con->prepare("INSERT INTO applicationForm (applicant_id, filename, mime_type, data, title) VALUES (?, ?, ?, ?, ?)");
             $stmt->bind_param("issss", $applicant_id, $doc['name'], $doc['mime_type'], $doc['data'], $doc['title']);

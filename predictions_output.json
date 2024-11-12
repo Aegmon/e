@@ -1,0 +1,122 @@
+[
+    {
+        "Name": "Person_1",
+        "GWA": 89.09077323775644,
+        "Income": 50000.0,
+        "Eligible": "Eligible"
+    },
+    {
+        "Name": "Person_2",
+        "GWA": 92.19018462750581,
+        "Income": 17754.176881015424,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_3",
+        "GWA": 83.67236809428596,
+        "Income": 50000.0,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_4",
+        "GWA": 94.43052324643271,
+        "Income": 17184.97174947765,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_5",
+        "GWA": 74.12516738402502,
+        "Income": 30719.899514656627,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_6",
+        "GWA": 75.20401406147418,
+        "Income": 4890.147429763959,
+        "Eligible": "Eligible"
+    },
+    {
+        "Name": "Person_7",
+        "GWA": 85.0873403900698,
+        "Income": 5327.14772937894,
+        "Eligible": "Eligible"
+    },
+    {
+        "Name": "Person_8",
+        "GWA": 89.59582111369508,
+        "Income": 50000.0,
+        "Eligible": "Eligible"
+    },
+    {
+        "Name": "Person_9",
+        "GWA": 93.36177632495605,
+        "Income": 25895.49655989301,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_10",
+        "GWA": 98.19662295675612,
+        "Income": 11354.236262387536,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_11",
+        "GWA": 90.64559727601889,
+        "Income": 50000.0,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_12",
+        "GWA": 77.98746230923223,
+        "Income": 16594.567402532855,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_13",
+        "GWA": 80.56292698956156,
+        "Income": 42968.95528365224,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_14",
+        "GWA": 83.7299438884021,
+        "Income": 50000.0,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_15",
+        "GWA": 82.31024676294639,
+        "Income": 43609.51033301619,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_16",
+        "GWA": 78.9095132411334,
+        "Income": 50000.0,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_17",
+        "GWA": 81.05732649123954,
+        "Income": 18164.132623429443,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_18",
+        "GWA": 79.53446209241758,
+        "Income": 50000.0,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_19",
+        "GWA": 100.0,
+        "Income": 50000.0,
+        "Eligible": "Not Eligible"
+    },
+    {
+        "Name": "Person_20",
+        "GWA": 92.50586509883972,
+        "Income": 17880.48144310692,
+        "Eligible": "Not Eligible"
+    }
+]
