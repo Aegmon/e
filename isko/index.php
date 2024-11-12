@@ -13,7 +13,7 @@ include("sidebar.php");
 				
 			</nav>
 
-			<main class="content"  style="background:url('../assets/user_bg.png'); background-repeat: no-repeat;
+			<main class="content"  style="background-color: #F3F3F3; background-repeat: no-repeat;
   background-size:  112%;">
 				<div class="container-fluid p-0">
 
@@ -27,7 +27,7 @@ include("sidebar.php");
 								<div class="card-body text-center">
 									<img src="../assets/img/<?php echo $picture?>" alt="" class="img-fluid rounded-circle mb-2" width="178" height="178" />
 									<h5 class="card-title mb-0"><?php echo $fname.' '.$lname?></h5>
-									<div class="text-muted mb-2">Student Number: <strong style="color: red;"><?php echo $studnum?></strong></div>
+									<div class="text-muted mb-2">Scholarship Status <a href="#"><?php echo $schstat?></strong></div>
 
 								
 								</div>
@@ -47,41 +47,11 @@ include("sidebar.php");
 										<li class="mb-1"><span data-feather="user" class="feather-sm me-1"></span> Course: <a href="#"><?php echo $course?></a></li>
 									</ul>
 								</div>
-								<hr class="my-0" />
-						
-						<hr class="my-0" />
-						<div class="card-body">
-							<h5 class="h6 card-title">Mother's Information</h5>
-							<ul class="list-unstyled mb-0">
-							<li class="mb-1"><span data-feather="user" class="feather-sm me-1"></span> Name: <a href="#"><?php echo $mfname.' '.$mlname?></a></li>
-								<li class="mb-1"><span data-feather="home" class="feather-sm me-1"></span> Lives in <a href="#"><?php echo $maddress?></a></li>
-								<li class="mb-1"><span data-feather="phone" class="feather-sm me-1"></span> Phone Number: <a href="#"><?php echo $mnumber?></a></li>
-								<li class="mb-1"><span data-feather="calendar" class="feather-sm me-1"></span>Date of Birth: <a href="#"><?php echo $mdob?></a></li>
-						
-							</ul>
-						</div>
-						<hr class="my-0" />
-						
-						<hr class="my-0" />
-						<div class="card-body">
-							<h5 class="h6 card-title">Father's Information</h5>
-							<ul class="list-unstyled mb-0">
-							<li class="mb-1"><span data-feather="user" class="feather-sm me-1"></span> Name: <a href="#"><?php echo $ffname.' '.$flname?></a></li>
-								<li class="mb-1"><span data-feather="home" class="feather-sm me-1"></span> Lives in <a href="#"><?php echo $faddress?></a></li>
-								<li class="mb-1"><span data-feather="phone" class="feather-sm me-1"></span> Phone Number: <a href="#"><?php echo $fnumber?></a></li>
-								<li class="mb-1"><span data-feather="calendar" class="feather-sm me-1"></span>Date of Birth: <a href="#"><?php echo $fdob?></a></li>
-							</ul>
-						</div>
-						<hr class="my-0" />
-						<div class="card-body">
-							<h5 class="h6 card-title">Guardian's Information</h5>
-							<ul class="list-unstyled mb-0">
-							<li class="mb-1"><span data-feather="user" class="feather-sm me-1"></span> Name:  <a href="#"><?php echo $gfname.' '.$glname?></a></li>
-								<li class="mb-1"><span data-feather="home" class="feather-sm me-1"></span> Relationship with the beneficiary <a href="#"><?php echo $rel?></a></li>
-								<li class="mb-1"><span data-feather="phone" class="feather-sm me-1"></span> Phone Number: <a href="#"><?php echo $gnumber?></a></li>
-								<li class="mb-1"><span data-feather="calendar" class="feather-sm me-1"></span>Date of Birth: <a href="#"><?php echo $rel?></a></li>
-							</ul>
-						</div>
+							
+
+						<div class="mb-3" style="text-align: center;">
+                            <input type="submit"  class="btn btn-lg btn-primary"  name="#" value="View Full Profile"aria-describedby="basic-addon1" >
+                        </div>
 							
 							</div>
 						</div>
@@ -94,7 +64,7 @@ include("sidebar.php");
 
 <?php 
 
-$qry = "SELECT * from annoucement";
+$qry = "SELECT * from announcements";
 $ses_sql = mysqli_query($con,$qry);
 while ($row = mysqli_fetch_array($ses_sql)) {
 
@@ -102,7 +72,7 @@ while ($row = mysqli_fetch_array($ses_sql)) {
 
 ?>
 
-<h1 class="text-center mb-5"><?php echo $row['content']?></h1>
+<h1 class="text-center mb-5"><?php echo $row['subject']?></h1>
 
 
 

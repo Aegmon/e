@@ -9,40 +9,19 @@ if (isset($_POST['login'])) {
     if ($email == "" || $password == "") {
         echo '<script type="text/javascript">alert("Check your inputs");</script>';
     } else {
-        $query = "SELECT * FROM userdata WHERE Email='$email'";
+        $query = "SELECT * FROM scholaraccount WHERE email='$email'";
         $ses_sql = mysqli_query($con, $query);
 
         if ($ses_sql && mysqli_num_rows($ses_sql) > 0) {
             $row = mysqli_fetch_assoc($ses_sql);
-            $sql1 = $row['Password'];
-            $sql2 = $row['userRole'];
-            $sql3 = $row['verification'];
-            $sql4 = $row['userID'];
+            $sql1 = $row['password'];
+            $id = $row['id'];
+       
 
             if (password_verify($password, $sql1)) {
-                $_SESSION['login_user'] = $email;
-
-                switch ($sql2) {
-                    case 'Scholar':
-                        if ($sql3 == '1') {
-                            header("location: ./isko/index.php");
-                        } elseif ($sql3 == '2') {
-                            header("location: ./isko/personalinfo.php?userID=$sql4");
-                        } else {
-                            echo '<script type="text/javascript">alert("Please Verify your email");</script>';
-                        }
-                        break;
-
-                    case 'Admin':
-                        $log = "Admin Login";
-                        $con->query("INSERT INTO `logs`(`logs`) VALUES ('$log')");
-                        header("location: ./admin/index.php");
-                        break;
-
-                    case 'Superadmin':
-                        header("location: ./superadmin/index.php");
-                        break;
-                }
+                $_SESSION['id'] = $id;
+                 header("location: otp.php");
+             
             } else {
                 echo '<script type="text/javascript">alert("Check your inputs");</script>';
             }

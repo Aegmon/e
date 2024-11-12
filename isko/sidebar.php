@@ -33,7 +33,7 @@ include('session.php');
 			<div class="sidebar-content js-simplebar">
 			<a class="sidebar-brand" href="index.php">
 			<div class="text-center">
-			<img src="../assets/SMG LOGO.png" class="img-fluid rounded-circle" width="250" height="250" />
+			<img src="" class="img-fluid rounded-circle" width="250" height="250" />
 	        </div>
         </a>
 			
@@ -45,36 +45,26 @@ include('session.php');
 				
 					<li class="sidebar-item ">
 						<a class="sidebar-link" href="index.php">
-              <i class="align-middle" data-feather="user" style="color:#ffff;"></i> <span class="align-middle">Profile</span>
+              <i class="align-middle" data-feather="home" style="color:#ffff;"></i> <span class="align-middle">Dashboard</span>
                         </a>
 					</li>
 
-<?php      
-                   if($schstat == 'Pending'){
-					echo '<li class="sidebar-item">
-						<a class="sidebar-link" href="newscholar.php" >
-              <i class="align-middle" data-feather="check-square" style="color:#ffff;"></i> <span class="align-middle">Application Form</span>
-            </a>
-		               </li>';
-					}else{
-						echo '<li class="sidebar-item">
-						<a class="sidebar-link" href="oldscholar.php" >
-              <i class="align-middle" data-feather="check-square" style="color:#ffff;"></i> <span class="align-middle">Renewal Application Form</span>
-            </a>
-		               </li>';
-					}
-					   ?> 
 
-					
+				
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="support.php">
+              				<i class="align-middle" data-feather="help-circle" style="color:#ffff;"></i> <span class="align-middle">Support Ticket</span>
+            			</a>
+					</li>
 					<li class="sidebar-item">
 						<a class="sidebar-link" href="settings.php">
-              <i class="align-middle" data-feather="settings" style="color:#ffff;"></i> <span class="align-middle">Account Settings</span>
-            </a>
+              			 				<i class="align-middle" data-feather="user" style="color:#ffff;"></i> <span class="align-middle">Account Management</span>
+            			</a>
 					</li>
 					<li class="sidebar-item">
 						<a class="sidebar-link" href="logout.php">
-              <i class="align-middle" data-feather="log-in" style="color:#ffff;"></i> <span class="align-middle">Logout</span>
-            </a>
+              				<i class="align-middle" data-feather="log-in" style="color:#ffff;"></i> <span class="align-middle">Logout</span>
+            			</a>
 					</li>
                  
 		

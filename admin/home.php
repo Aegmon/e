@@ -53,6 +53,7 @@ function getCountScholarType($status) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $subject = mysqli_real_escape_string($con, $_POST['subject']);
     $date = mysqli_real_escape_string($con, $_POST['date']);
+        $content = mysqli_real_escape_string($con, $_POST['content']);
     $image = null;
 
     // Handle the file upload
@@ -70,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Insert announcement into the database
-    $query = "INSERT INTO announcements (subject, date, image) VALUES ('$subject', '$date', '$image')";
+    $query = "INSERT INTO announcements (subject, date, image , content) VALUES ('$subject', '$date', '$image', '$content')";
     if (mysqli_query($con, $query)) {
         echo '<script>
  
@@ -165,6 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <tr>
                         <th>Subject</th>
                         <th>Date</th>
+                               <th>Content</th>
                         <th>Image</th>
                     </tr>
                 </thead>
@@ -176,6 +178,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         echo "<tr>";
                         echo "<td>" . htmlspecialchars($row['subject']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['date']) . "</td>";
+                                      echo "<td>" . htmlspecialchars($row['content']) . "</td>";
                         echo "<td>";
                         if ($row['image']) {
                             echo "<img src='uploads/" . htmlspecialchars($row['image']) . "' alt='Announcement Image' width='100'>";

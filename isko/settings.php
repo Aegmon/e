@@ -57,7 +57,7 @@ if(isset($_POST['reset'])){
 }
 ?>
 
-		<div class="main" style="background:url('../assets/user_bg.png');
+		<div class="main" ;
   background-size:  100%;">
 			<nav class="navbar navbar-expand navbar-light navbar-bg">
 				<a class="sidebar-toggle js-sidebar-toggle">
@@ -111,10 +111,7 @@ if(isset($_POST['reset'])){
   <option value="Legally Separated">Legally Separated</option>
 </select>
 										</div>
-										<div class="mb-3">
-											<label class="form-label">Student Number</label>
-                                         <input type="text" class="form-control" placeholder="" name="stud_num" value="<?php echo $studnum ?>"aria-describedby="basic-addon1" readonly>
-										</div>
+										
 										<div class="mb-3">
 											<label class="form-label">Address</label>
                                          <input type="text" class="form-control"  name="address" value="<?php echo $address ?>"aria-describedby="basic-addon1" >

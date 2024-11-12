@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
+    <link rel="stylesheet" href="2fa_admin.css">
+    <title>2FA</title>
+</head>
+<body>
+
+    <div id="rcorners2fa">
+        <h2>Two Factor Authentication</h2>
+        <p>Good Day, Admin! <br>Please select the authentication method you would like to use.</p>
+        <input type="radio" id="sms" name="method" value="SMS">
+        <label for="sms">SMS</label><br>
+        <input type="radio" id="email" name="method" value="Email">
+        <label for="email">Email</label><br>
+        <button id="nextButton" type="button">Next</button>
+    </div>
+    
+    <div id="rcornersEmail" style="display: none;">
+        <h2>Email Verification</h2>
+        <p>Please enter your email to receive a verification code.</p>
+        <br>
+        <input type="email" id="emailInput" placeholder="johndoe@gmail.com" required>
+        <button id="sendEmailCodeButton" type="button">Send Code</button>
+        <br>
+        <p id="nonotif">Did not receive an email?</p>
+        <p id="nonotif">
+            <button class="no_border" id="tryEmail">Try Again</button> or 
+            <button class="no_border" id="cancelEmail">Cancel</button>
+        </p>
+    </div>
+    
+    <div id="rcornersSMS" style="display: none;">
+        <h2>SMS Verification</h2>
+        <p>Please enter your mobile number to receive a verification code.</p>
+        <br>
+        <input type="number" id="smsInput" placeholder="+639123456789" required>
+        <button id="sendSMSCodeButton" type="button">Send Code</button>
+        <br>
+        <p id="nonotif">Did not receive an SMS?</p>
+        <p id="nonotif">
+            <button class="no_border" id="trySMS">Try Again</button> or 
+            <button class="no_border" id="cancelSMS">Cancel</button>
+        </p>
+    </div>
+
+    <!-- Email Verification Section -->
+    <div id="rcornersVerifyEmail" style="display: none;">
+        <h2>Verify it's you</h2>
+        <p id="emailConfirmationText"></p>
+        <p id="reminder">Enter the code sent from your email in the fields below.</p>
+        <div class="code-input-container">
+            <input type="text" class="code-input-email" maxlength="1" oninput="moveToNext(this, event)" onkeydown="handleBackspace(this, event)" pattern="[0-9]">
+            <input type="text" class="code-input-email" maxlength="1" oninput="moveToNext(this, event)" onkeydown="handleBackspace(this, event)" pattern="[0-9]">
+            <input type="text" class="code-input-email" maxlength="1" oninput="moveToNext(this, event)" onkeydown="handleBackspace(this, event)" pattern="[0-9]">
+            <input type="text" class="code-input-email" maxlength="1" oninput="moveToNext(this, event)" onkeydown="handleBackspace(this, event)" pattern="[0-9]">
+            <input type="text" class="code-input-email" maxlength="1" oninput="moveToNext(this, event)" onkeydown="handleBackspace(this, event)" pattern="[0-9]">
+            <input type="text" class="code-input-email" maxlength="1" oninput="moveToNext(this, event)" onkeydown="handleBackspace(this, event)" pattern="[0-9]">
+        </div>
+        <br><br>
+        <button id="verifyEmailButton" type="button" onclick="handleVerifyEmail()">Verify</button>
+
+        <p id="nonotif">Did not receive an email?</p>
+        <p id="nonotif"><button class="no_border" id="tryEmailAgain">Try Again</button> or <button class="no_border" id="cancelEmailVerification">Cancel</button></p>
+    </div>
+
+    <!-- SMS Verification Section -->
+    <div id="rcornersVerifySMS" style="display: none;">
+        <h2>Text Authentication Code</h2>
+        <p id="smsConfirmationText"></p>
+        <p id="reminder">Check your text messages and enter the provided code below.</p>
+        <div class="code-input-container">
+            <input type="text" class="code-input-sms" maxlength="1" oninput="moveToNext(this, event)" onkeydown="handleBackspace(this, event)" pattern="[0-9]">
+            <input type="text" class="code-input-sms" maxlength="1" oninput="moveToNext(this, event)" onkeydown="handleBackspace(this, event)" pattern="[0-9]">
+            <input type="text" class="code-input-sms" maxlength="1" oninput="moveToNext(this, event)" onkeydown="handleBackspace(this, event)" pattern="[0-9]">
+            <input type="text" class="code-input-sms" maxlength="1" oninput="moveToNext(this, event)" onkeydown="handleBackspace(this, event)" pattern="[0-9]">
+            <input type="text" class="code-input-sms" maxlength="1" oninput="moveToNext(this, event)" onkeydown="handleBackspace(this, event)" pattern="[0-9]">
+            <input type="text" class="code-input-sms" maxlength="1" oninput="moveToNext(this, event)" onkeydown="handleBackspace(this, event)" pattern="[0-9]">
+        </div>
+        <br><br>
+        <button id="verifySMSButton" type="button" onclick="handleVerifySMS()">Verify</button>
+
+        <p id="nonotif">Did not receive any SMS?</p>
+        <p id="nonotif"><button class="no_border" id="trySMSAgain">Try Again</button> or <button class="no_border" id="cancelSMSVerification">Cancel</button></p>
+    </div>
+
+<script src="2fa_admin.js"></script>
+</body>
+</html>

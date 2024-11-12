@@ -36,50 +36,96 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $contact_number = mysqli_real_escape_string($con, $_POST['contact_number']);
     $email_address = mysqli_real_escape_string($con, $_POST['email_address']);
     
-    // Handle file upload (ID Picture)
-    $id_picture = "";
-    if (isset($_FILES['id_picture']) && $_FILES['id_picture']['error'] == 0) {
-        $id_picture_name = basename($_FILES['id_picture']['name']);
-        $id_picture_temp = $_FILES['id_picture']['tmp_name'];
-        $id_picture = "uploads/" . $id_picture_name;  // Specify upload folder
+    $documents = [];
+    if (isset($_FILES['documents'])) {
+        foreach ($_FILES['documents']['tmp_name'] as $key => $tmp_name) {
+            if ($_FILES['documents']['error'][$key] === UPLOAD_ERR_OK) {
+                $filename = basename($_FILES['documents']['name'][$key]);
+                $mime_type = $_FILES['documents']['type'][$key];
+                $data = file_get_contents($tmp_name);
 
-        move_uploaded_file($id_picture_temp, $id_picture);
+                // Mapping document names to titles
+                $document_titles = [
+                    'birth_cert' => 'Birth Certificate',
+                    'indigency_file' => 'Indigency Certificate',
+                    'good_moral' => 'Certificate of Good Moral',
+                    'form_137' => 'Form 137',
+                    'voters_id' => "Voter's ID of Parents"
+                ];
+
+                $document_title = isset($document_titles[$key]) ? $document_titles[$key] : 'Unknown Document';
+
+                // Store document information
+                $documents[] = [
+                    'name' => $filename,
+                    'mime_type' => $mime_type,
+                    'data' => $data,
+                    'title' => $document_title
+                ];
+            }
+        }
+    }
+    // Determine scholarship status and type
+    if (($gen_average >= 85 && $gen_average <= 100) && 
+        (($father_income >= 100 && $father_income <= 25000) || ($mother_income >= 100 && $mother_income <= 25000))) {
+        $status = 'Eligible';
+    } else {
+        $status = 'Ineligible';
     }
 
-    // Randomly assign values to status and scholarType
-    $status_values = ['Eligible', 'Ineligible'];
-    $scholarType_values = ['Full Scholarship', 'Grant level 1', 'Grant Level 2'];
-    
-    $status = $status_values[array_rand($status_values)];
-    $scholarType = $scholarType_values[array_rand($scholarType_values)];
+    if ($gen_average >= 90 && $gen_average <= 100) {
+        $scholarType = 'Full Scholarship';
+    } elseif ($gen_average >= 88 && $gen_average <= 89) {
+        $scholarType = 'Grant Level 1';
+    } elseif ($gen_average >= 85 && $gen_average <= 87) {
+        $scholarType = 'Grant Level 2';
+    } else {
+        $scholarType = 'No Scholarship';
+    }
 
-    // SQL query to insert form data into database
+    // Insert applicant data into database
     $query = "INSERT INTO applicants (
                 last_name, first_name, middle_name, date_of_birth, citizenship, religion, contact_no, email,
                 gender, home_address, zip_code, civil_status, present_address, qualify, father_name, father_age,
                 father_occupation, father_income, mother_name, mother_age, mother_occupation, mother_income,
                 parent_contact, living_with_family, living_with, num_household, senior_high_school, 
-                senior_high_school_address, gen_average, contact_number, email_address, id_picture, status, scholarType
+                senior_high_school_address, gen_average, contact_number, email_address, status, scholarType
             ) VALUES (
                 '$last_name', '$first_name', '$middle_name', '$date_of_birth', '$citizenship', '$religion', '$contact_no', '$email',
                 '$gender', '$home_address', '$zip_code', '$civil_status', '$present_address', '$qualify', '$father_name', '$father_age',
                 '$father_occupation', '$father_income', '$mother_name', '$mother_age', '$mother_occupation', '$mother_income',
                 '$parent_contact', '$living_with_family', '$living_with', '$num_household', '$senior_high_school', 
-                '$senior_high_school_address', '$gen_average', '$contact_number', '$email_address', '$id_picture', '$status', '$scholarType'
+                '$senior_high_school_address', '$gen_average', '$contact_number', '$email_address', '$status', '$scholarType'
             )";
 
-    // Execute the query
-    if (mysqli_query($con, $query)) {
-          header("Location: thankyou.php");
-          exit();  
+    // Execute the query to insert applicant data
+      if (mysqli_query($con, $query)) {
+        // Get the last inserted applicant_id
+        $applicant_id = mysqli_insert_id($con);
+
+        // Insert documents into applicationForm table
+        foreach ($documents as $doc) {
+            $stmt = $con->prepare("INSERT INTO applicationForm (applicant_id, filename, mime_type, data, title) VALUES (?, ?, ?, ?, ?)");
+            $stmt->bind_param("issss", $applicant_id, $doc['name'], $doc['mime_type'], $doc['data'], $doc['title']);
+            
+            if ($stmt->execute()) {
+                echo "File {$doc['name']} uploaded successfully.<br>";
+            } else {
+                echo "Failed to upload {$doc['name']}.<br>";
+            }
+        }
+
+        header("Location: thankyou.php"); // Redirect to a Thank You page after submission
     } else {
         echo "Error: " . $query . "<br>" . mysqli_error($con);
     }
 
     // Close the connection
     mysqli_close($con);
-} 
+}
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -314,48 +360,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="file-container">
           <h2 class="text-center">Upload the Following Required Documents:</h2>
           <p class="p3 text-center">Please make sure to read and double-check all the information you have filled out.</p>
-        
-          <div class="document-container">
-            <div class="file-upload mb-3">
-              <h3>Birth Certificate</h3>
-              <p class="p2">(PSA)</p>
-              <input type="file" id="birthcert" name="birth_cert" accept="application/pdf" class="form-control" required>
-              <input type="button" value="Upload" class="btn btn-outline-primary mt-2" onclick="validatePDF('birthcert')">
-            </div>
-          </div>
+        <div class="document-container">
+    <div class="file-upload mb-3">
+        <h3>Birth Certificate</h3>
+        <p class="p2">(PSA)</p>
+        <input type="file" id="birthcert" name="documents[birth_cert]" accept="application/pdf" class="form-control" required>
+    </div>
+</div>
+
+<div class="document-container">
+    <div class="file-upload mb-3">
+        <h3>Indigency Certificate</h3>
+        <p class="p2">with the purpose stated as Scholarship</p>
+        <input type="file" id="indigencyFile" name="documents[indigency_file]" accept="application/pdf" class="form-control" required>
+    </div>
+</div>
+
+<div class="document-container">
+    <div class="file-upload mb-3">
+        <h3>Certificate of Good Moral</h3>
+        <input type="file" id="goodmoral" name="documents[good_moral]" accept="application/pdf" class="form-control" required>
+    </div>
+</div>
+
+<div class="document-container">
+    <div class="file-upload mb-3">
+        <h3>Form 137</h3>
+        <input type="file" id="form137" name="documents[form_137]" accept="application/pdf" class="form-control" required>
+    </div>
+</div>
+
+<div class="document-container">
+    <div class="file-upload mb-3">
+        <h3>Voter's ID of Parents</h3>
+        <input type="file" id="votersID" name="documents[voters_id]" accept="application/pdf" class="form-control" required>
+    </div>
+</div>
+
           
-          <div class="document-container">
-            <div class="file-upload mb-3">
-              <h3>Indigency Certificate</h3>
-              <p class="p2">with the purpose stated as Scholarship</p>
-              <input type="file" id="indigencyFile" name="indigency_file" accept="application/pdf" class="form-control" required>
-              <input type="button" value="Upload" class="btn btn-outline-primary mt-2" onclick="validatePDF('indigencyFile')">
-            </div>
-          </div>
-          
-          <div class="document-container">
-            <div class="file-upload mb-3">
-              <h3>Certificate of Good Moral</h3>
-              <input type="file" id="goodmoral" name="good_moral" accept="application/pdf" class="form-control" required>
-              <input type="button" value="Upload" class="btn btn-outline-primary mt-2" onclick="validatePDF('goodmoral')">
-            </div>
-          </div>
-          
-          <div class="document-container">
-            <div class="file-upload mb-3">
-              <h3>Form 137</h3>
-              <input type="file" id="form137" name="form_137" accept="application/pdf" class="form-control" required>
-              <input type="button" value="Upload" class="btn btn-outline-primary mt-2" onclick="validatePDF('form137')">
-            </div>
-          </div>
-          
-          <div class="document-container">
-            <div class="file-upload mb-3">
-              <h3>Voter's ID of Parents</h3>
-              <input type="file" id="votersID" name="voters_id" accept="application/pdf" class="form-control" required>
-              <input type="button" value="Upload" class="btn btn-outline-primary mt-2" onclick="validatePDF('votersID')">
-            </div>
-          </div>
+       
+     
           
         <p class="p3 text-center mt-4">We appreciate your time and effort in providing us with the necessary details.<br> Best of luck with your application!</p>
       </div>

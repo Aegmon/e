@@ -1,0 +1,146 @@
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f5f5f5;
+}
+
+#rcorners2fa, #rcornersEmail, #rcornersSMS, #rcornersVerifyEmail, #rcornersVerifySMS {
+    border-radius: 15px;
+    border: 2px solid black;
+    background: #FAE6B9;
+    padding: 20px; 
+    width: 500px;
+    font-family: 'Inter';
+    margin: auto;
+    margin-top: 200px;
+    display: none; 
+}
+
+#rcorners2fa {
+    display: block;
+    height: 220px;
+}
+
+#rcornersEmail, #rcornersSMS {
+    height: 300px;
+    margin-top: 150px;
+}
+
+#rcornersVerifyEmail, #rcornersVerifySMS {
+    height: 320px;
+    margin-top: 150px;
+}
+
+p {
+    margin: 10px 0;
+}
+
+input[type="radio"] {
+    margin: 5px 10px 0 0;
+}
+
+input[type="email"] {
+    border-radius: 10px;
+    padding: 10px 20px;
+    width: 80%;
+    display: block; 
+    margin: auto;
+    border: 2px solid #ccc;
+    font-size: 16px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+input[type="number"] {
+    border-radius: 10px;
+    padding: 10px 20px;
+    width: 30%;
+    display: block; 
+    margin: auto;
+    border: 2px solid #ccc;
+    font-size: 16px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#nextButton, #sendEmailCodeButton, #sendSMSCodeButton, #verifyEmailButton, #verifySMSButton {
+    background: #2F27CE;
+    color: white;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 30px;
+    font-size: 17px;
+    cursor: pointer;
+    display: block; 
+    margin: 20px auto 10px;
+    transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+#nextButton:hover, #sendEmailCodeButton:hover, #sendSMSCodeButton:hover, #verifyEmailButton:hover, #verifySMSButton:hover{
+    background-color: #0c94e3;
+}
+
+#nextButton:active, #sendEmailCodeButton:active, #sendSMSCodeButton:active, #verifyEmailButton:active, #verifySMSButton:active {
+    background-color: #0c94e3;
+    box-shadow: 0 5px rgb(153, 149, 208);
+    transform: translateY(4px);
+}
+
+#verifyEmailButton, #verifySMSButton {
+    margin: -20px auto 30px;
+}
+
+.no_border {
+    background: #FAE6B9;
+    border: none;
+    font-size: medium;
+    cursor: pointer;
+}
+
+.no_border:hover {
+    text-decoration: underline;
+}
+
+#reminder {
+    color: #0c94e3;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#nonotif {
+    text-align: center;
+    margin: 10px 0;
+}
+
+#tryEmail, #trySMS, #tryEmailAgain, #trySMSAgain {
+    color: #1151F8;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: medium;
+}
+
+#cancelEmail, #cancelSMS, #cancelEmailVerification, #cancelSMSVerification {
+    color: red;
+    cursor: pointer;
+    background: none;
+    border: none;
+    font-size: medium;
+}
+
+.code-input-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.code-input-email, .code-input-sms {
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+}
