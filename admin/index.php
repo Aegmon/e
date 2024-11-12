@@ -20,8 +20,8 @@ if (isset($_POST['login'])) {
             $sql4 = $row['userID'];
 
             if (password_verify($password, $sql1)) {
-                $_SESSION['login_user'] = $email;
-
+                $_SESSION['userID'] = $sql4;
+    $_SESSION['login_user'] = $email;
                 switch ($sql2) {
                     case 'Scholar':
                         if ($sql3 == '1') {
@@ -36,7 +36,7 @@ if (isset($_POST['login'])) {
                     case 'Admin':
                         $log = "Admin Login";
                         $con->query("INSERT INTO `logs`(`logs`) VALUES ('$log')");
-                        header("location: home.php");
+                        header("location: otp.php");
                         break;
 
                     case 'Superadmin':
