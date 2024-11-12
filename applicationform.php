@@ -1,6 +1,8 @@
+
 <?php
 include("connection.php");
-
+    $command = escapeshellcmd("python3 app.py"); // Adjust the Python script filename if needed
+    shell_exec($command); // Execute the Python script
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Collect form data
