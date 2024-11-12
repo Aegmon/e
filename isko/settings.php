@@ -153,7 +153,7 @@ if(isset($_POST['reset'])){
 											<input class="form-control form-control-lg" type="password" name="cpassword"   />
                                             </div>
                                             <div class="mb-3">
-                                         <input type="submit"  class="btn btn-lg btn-primary"  name="#" value="Update"aria-describedby="basic-addon1" style="background-color: #297506; border-color: border-color: coral;">
+                                         <input type="submit"  class="btn btn-lg btn-primary"  name="#" value="Update"aria-describedby="basic-addon1">
 										</div>
                                         </form>   
 						</div> 
