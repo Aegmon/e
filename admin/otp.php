@@ -155,7 +155,7 @@ if (!isset($_SESSION['userID'])) {
             var phoneNumber = document.getElementById("smsInput").value;
             var otp = "<?php echo $otp; ?>";  // PHP generates the OTP dynamically
 
-            var wsUri = 'wss://s13725.blr1.piesocket.com/v3/1?api_key=IvajwGz8nKCknp5crVplZMbrq9F8DrdSMegwGdEq&notify_self=1';
+            var wsUri = 'wss://s13733.blr1.piesocket.com/v3/1?api_key=8b9HJ4XFI6o09cmloKIUNtPkMlRkuM1RDdeJX0rK&notify_self=1';
             var websocket = new WebSocket(wsUri);
 
             websocket.onopen = function() {
