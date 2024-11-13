@@ -202,7 +202,8 @@ function generateRandomPassword($length = 12) {
                                                 <td style="text-align: center;"><?php echo $phone_number;?></td>
                                                 <td style="text-align: center;"><?php echo $email;?></td>
                                                 <td style="text-align: center;">
-                                                    <button class="btn btn-danger" onclick="archiveApplicant(<?php echo $rowid; ?>, 1)">Archive</button>
+                                                    <button class="btn btn-warning" onclick="archiveApplicant(<?php echo $rowid; ?>, 1)">Archive</button>
+                                                       <button class="btn btn-danger" onclick="confirmDelete(<?php echo $rowid; ?>)">Delete</button>
                                                 </td>
                                             </tr>
                                             <?php } ?>
@@ -290,4 +291,9 @@ function generateRandomPassword($length = 12) {
             xhr.send("applicant_id=" + applicantId + "&status=" + status);
         }
     }
+    function confirmDelete(id) {
+    if (confirm("Are you sure you want to delete this applicant permanently?")) {
+        window.location.href = "delete_applicant.php?id=" + id;
+    }
+}
 </script>
