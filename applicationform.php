@@ -1,8 +1,7 @@
 
 <?php
 include("connection.php");
-    $command = escapeshellcmd("python3 app.py"); // Adjust the Python script filename if needed
-    shell_exec($command); // Execute the Python script
+
 // Check if the form is submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Collect form data
@@ -38,9 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $contact_number = mysqli_real_escape_string($con, $_POST['contact_number']);
     $email_address = mysqli_real_escape_string($con, $_POST['email_address']);
 
-    // Run the Python script and get the output (i.e., generate the predictions.json file)
-    $command = escapeshellcmd("python3 app.py"); // Adjust the Python script filename if needed
-    shell_exec($command); // Execute the Python script
+
 
     // Read the predictions.json file after Python script execution
     $json_file = 'predictions_output.json';
@@ -50,7 +47,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Initialize scholarship eligibility and type
     $eligibility_status = 'Ineligible';
     $scholar_type = 'No Scholarship';
+  $id_picture_path = null;
+    if (isset($_FILES['id_picture']) && $_FILES['id_picture']['error'] === 0) {
+        $fileTmpPath = $_FILES['id_picture']['tmp_name'];
+        $fileName = uniqid() . '-' . $_FILES['id_picture']['name']; // Unique file name to avoid conflicts
+        $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+        $allowedExtensions = ['jpg', 'jpeg', 'png'];
 
+        // Validate file type
+        if (in_array($fileExtension, $allowedExtensions)) {
+            // Define the upload path
+            $uploadPath = 'uploads/' . $fileName;
+            
+            // Move the file to the upload directory
+            if (move_uploaded_file($fileTmpPath, $uploadPath)) {
+                $id_picture_path = $uploadPath; // Save the file path for database insertion
+            } else {
+                echo "Error: Could not save the file.";
+            }
+        } else {
+            echo "Error: Invalid file type.";
+        }
+    } else {
+        echo "Error: No file uploaded or file error.";
+    }
     // Check eligibility based on GWA and income from JSON
     foreach ($decoded_data as $person) {
         if ($gen_average >= $person['GWA'] && 
@@ -71,18 +91,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Insert applicant data into the database
-    $query = "INSERT INTO applicants (
+   $query = "INSERT INTO applicants (
                 last_name, first_name, middle_name, date_of_birth, citizenship, religion, contact_no, email,
                 gender, home_address, zip_code, civil_status, present_address, qualify, father_name, father_age,
                 father_occupation, father_income, mother_name, mother_age, mother_occupation, mother_income,
                 parent_contact, living_with_family, living_with, num_household, senior_high_school, 
-                senior_high_school_address, gen_average, contact_number, email_address, status, scholarType
+                senior_high_school_address, gen_average, contact_number, email_address, status, scholarType,
+                id_picture
             ) VALUES (
                 '$last_name', '$first_name', '$middle_name', '$date_of_birth', '$citizenship', '$religion', '$contact_no', '$email',
                 '$gender', '$home_address', '$zip_code', '$civil_status', '$present_address', '$qualify', '$father_name', '$father_age',
                 '$father_occupation', '$father_income', '$mother_name', '$mother_age', '$mother_occupation', '$mother_income',
                 '$parent_contact', '$living_with_family', '$living_with', '$num_household', '$senior_high_school', 
-                '$senior_high_school_address', '$gen_average', '$contact_number', '$email_address', '$eligibility_status', '$scholar_type'
+                '$senior_high_school_address', '$gen_average', '$contact_number', '$email_address', '$eligibility_status', 
+                '$scholar_type', '$id_picture_path'
             )";
 
     // Execute the query to insert applicant data
@@ -107,8 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo "Error: " . $query . "<br>" . mysqli_error($con);
     }
 
-    // Close the connection
-    mysqli_close($con);
+
 }
 ?>
 

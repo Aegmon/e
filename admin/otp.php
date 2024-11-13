@@ -55,7 +55,7 @@ if (!isset($_SESSION['userID'])) {
 
     <div id="rcorners2fa">
         <h2>Two Factor Authentication</h2>
-        <p>Good Day, Scholar! <br>Please select the authentication method you would like to use.</p>
+        <p>Good Day, Admin! <br>Please select the authentication method you would like to use.</p>
         <input type="radio" id="sms" name="method" value="SMS">
         <label for="sms">SMS</label><br>
         <input type="radio" id="email" name="method" value="Email">
@@ -69,6 +69,7 @@ if (!isset($_SESSION['userID'])) {
         <p>Please enter your email to receive a verification code.</p>
         <br>
         <input type="email" id="emailInput" placeholder="johndoe@gmail.com" required>
+        <input type="hidden" id="otp"  value="<?php echo $otp?>"required>
         <button id="sendEmailCodeButton" type="button">Send Code</button>
         <br>
         <p id="nonotif">Did not receive an email?</p>
@@ -116,34 +117,56 @@ if (!isset($_SESSION['userID'])) {
         });
 
         // Send OTP via Email
- document.getElementById("sendEmailCodeButton").addEventListener("click", function() {
-    var email = document.getElementById("emailInput").value; // Get the email from the user input
+document.getElementById("sendEmailCodeButton").addEventListener("click", function() {
+    var email = document.getElementById("emailInput").value;
+    
+    // Generate a random OTP in JavaScript
+     var otp = document.getElementById("otp").value;
 
     if (email === "") {
         alert("Please enter a valid email address.");
         return;
     }
 
-    // Send an AJAX request to the PHP backend to send the OTP
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "send_otp.php", true);  // Send the request to the PHP script
+    xhr.open("POST", "send_otp.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
     xhr.onload = function() {
         if (xhr.status === 200) {
             if (xhr.responseText === "OTP has been sent to your email.") {
                 alert("OTP has been sent to your email.");
-                document.getElementById("rcornersOTP").style.display = "block"; // Show OTP input
+                document.getElementById("rcornersOTP").style.display = "block";
+                document.getElementById("rcornersEmail").style.display = "none";
             } else {
                 alert("Failed to send OTP email.");
             }
         }
     };
 
-    // Send the email to the PHP script
-    xhr.send("email=" + encodeURIComponent(email));  
+    // Send email and OTP to the server
+    xhr.send("email=" + encodeURIComponent(email) + "&otp=" + encodeURIComponent(otp));
 });
 
+  document.getElementById("tryEmail").addEventListener("click", function() {
+        document.getElementById("rcornersOTP").style.display = "none";
+        document.getElementById("rcornersEmail").style.display = "block";
+    });
+
+    document.getElementById("cancelEmail").addEventListener("click", function() {
+        document.getElementById("rcornersEmail").style.display = "none";
+        document.getElementById("rcorners2fa").style.display = "block";
+    });
+
+    document.getElementById("trySMS").addEventListener("click", function() {
+        document.getElementById("rcornersOTP").style.display = "none";
+        document.getElementById("rcornersSMS").style.display = "block";
+    });
+
+    document.getElementById("cancelSMS").addEventListener("click", function() {
+        document.getElementById("rcornersSMS").style.display = "none";
+        document.getElementById("rcorners2fa").style.display = "block";
+    });
 
         // Send OTP via SMS using WebSocket
         document.getElementById("sendSMSCodeButton").addEventListener("click", function() {

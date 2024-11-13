@@ -71,61 +71,63 @@ function generateRandomPassword($length = 12) {
                             <div class="tab-content" id="eligibilityTabsContent">
                                 <!-- Eligible Tab -->
                                 <div class="tab-pane fade show active" id="eligible" role="tabpanel" aria-labelledby="eligible-tab">
+                            <div class="table-responsive">
                               <table class="table p-2" id="filterTableEligible">
-    <thead>
-        <tr>
-            <th style="text-align: center;">Name</th>
-            <th style="text-align: center;">Academic Year</th>
-            <th style="text-align: center;">Semester</th>
-            <th style="text-align: center;">Application Form</th>
-            <th style="text-align: center;">Scholarship Type</th>
-            <th style="text-align: center;">Scholarship Status</th>
-            <th style="text-align: center;">COR</th>
-            <th style="text-align: center;">ROG</th>
-            <th style="text-align: center;">Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php
-            $qry = "SELECT * FROM applicants 
-                    WHERE status = 'Granted' AND isArchive = '0'"; 
-            $ses_sql = mysqli_query($con, $qry);
-            while ($row = mysqli_fetch_array($ses_sql)) {
-                $fname = $row['first_name'];
-                $lname = $row['last_name'];
-                $rowid = $row['id'];
-        ?>
-        <tr>
-            <td style="text-align: center;"><?php echo $lname . ', ' . $fname; ?></td>
-            <td style="text-align: center;">Academic Year</td>
-            <td style="text-align: center;">Semester</td>
-            <td style="text-align: center;">
-                <a class="btn btn-primary" href="viewapplication.php?applicant_id=<?php echo $rowid ?>"><i data-feather='eye'></i> View</a>
-            </td>
-            <td style="text-align: center;"><?php echo $row['scholarType']; ?></td>
-            <td style="text-align: center;"><?php echo $row['status']; ?></td>
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align: center;">Name</th>
+                                            <th style="text-align: center;">Academic Year</th>
+                                            <th style="text-align: center;">Semester</th>
+                                            <th style="text-align: center;">Application Form</th>
+                                            <th style="text-align: center;">Scholarship Type</th>
+                                            <th style="text-align: center;">Scholarship Status</th>
+                                            <th style="text-align: center;">COR</th>
+                                            <th style="text-align: center;">ROG</th>
+                                            <th style="text-align: center;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                            $qry = "SELECT * FROM applicants 
+                                                    WHERE status = 'Granted' AND isArchive = '0'"; 
+                                            $ses_sql = mysqli_query($con, $qry);
+                                            while ($row = mysqli_fetch_array($ses_sql)) {
+                                                $fname = $row['first_name'];
+                                                $lname = $row['last_name'];
+                                                $rowid = $row['id'];
+                                                $emailadd = $row['email'];
+                                        ?>
+                                        <tr>
+                                            <td style="text-align: center;"><?php echo $lname . ', ' . $fname; ?></td>
+                                            <td style="text-align: center;">Academic Year</td>
+                                            <td style="text-align: center;">Semester</td>
+                                            <td style="text-align: center;">
+                                                <a class="btn btn-primary" href="viewapplication.php?applicant_id=<?php echo $rowid ?>"><i data-feather='eye'></i> View</a>
+                                            </td>
+                                            <td style="text-align: center;"><?php echo $row['scholarType']; ?></td>
+                                            <td style="text-align: center;"><?php echo $row['status']; ?></td>
 
-            <!-- COR Document -->
-            <td style="text-align: center;">
-                <?php 
-                    if (!empty($row['cor_filename'])) {
-                        echo '<a class="btn btn-info" href="downloadfile.php?title=cor&applicant_id=' . $rowid . '" download="' . $row['cor_filename'] . '">Download COR</a>';
-                    } else {
-                        echo '<span>No COR available</span>';
-                    }
-                ?>
-            </td>
+                                            <!-- COR Document -->
+                                            <td style="text-align: center;">
+                                                <?php 
+                                                    if (!empty($row['cor_filename'])) {
+                                                        echo '<a class="btn btn-info" href="downloadfile.php?title=cor&applicant_id=' . $rowid . '" download="' . $row['cor_filename'] . '">Download COR</a>';
+                                                    } else {
+                                                        echo '<span>No COR available</span>';
+                                                    }
+                                                ?>
+                                            </td>
 
-            <!-- ROG Document -->
-            <td style="text-align: center;">
-                <?php 
-                    if (!empty($row['rog_filename'])) {
-                        echo '<a class="btn btn-info" href="downloadfile.php?title=rog&applicant_id=' . $rowid . '" download="' . $row['rog_filename'] . '">Download ROG</a>';
-                    } else {
-                        echo '<span>No ROG available</span>';
-                    }
-                ?>
-            </td>
+                                            <!-- ROG Document -->
+                                            <td style="text-align: center;">
+                                                <?php 
+                                                    if (!empty($row['rog_filename'])) {
+                                                        echo '<a class="btn btn-info" href="downloadfile.php?title=rog&applicant_id=' . $rowid . '" download="' . $row['rog_filename'] . '">Download ROG</a>';
+                                                    } else {
+                                                        echo '<span>No ROG available</span>';
+                                                    }
+                                                ?>
+                                            </td>
                                             <td style="text-align: center;">
                                                 <button class="btn btn-info" data-toggle="modal" data-target="#createaccountmodal<?php echo $rowid; ?>">Create Account</button>
                                                 <a class="btn btn-primary" href="updatescholar.php?applicant_id=<?php echo $rowid; ?>">Update</a>
@@ -147,7 +149,7 @@ function generateRandomPassword($length = 12) {
                                                         <form action="" method="POST">
                                                             <div class="form-group">
                                                                 <label for="email">Email</label>
-                                                                <input type="email" name="email" class="form-control" value="<?php echo $email; ?>" readonly />
+                                                                <input type="email" name="email" class="form-control" value="<?php echo $emailadd; ?>"  />
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="password">Password</label>
@@ -167,7 +169,7 @@ function generateRandomPassword($length = 12) {
                                         <?php } ?>
                                     </tbody>
                                 </table>
-
+                                </div>
                                 </div>
 
                                 <!-- Uneligible Tab -->
@@ -200,7 +202,7 @@ function generateRandomPassword($length = 12) {
                                                 <td style="text-align: center;"><?php echo $phone_number;?></td>
                                                 <td style="text-align: center;"><?php echo $email;?></td>
                                                 <td style="text-align: center;">
-                                                    <button class="btn btn-danger" onclick="archiveApplicant(<?php echo $rowid; ?>, 0)">Archive</button>
+                                                    <button class="btn btn-danger" onclick="archiveApplicant(<?php echo $rowid; ?>, 1)">Archive</button>
                                                 </td>
                                             </tr>
                                             <?php } ?>
@@ -210,7 +212,7 @@ function generateRandomPassword($length = 12) {
 
                                 <!-- Archive Tab -->
                                 <div class="tab-pane fade" id="archive" role="tabpanel" aria-labelledby="archive-tab">
-                                    <table class="table p-2">
+                                    <table class="table p-2" id="filterTableArchive">
                                         <thead>
                                             <tr>
                                                 <th style="text-align: center;">Name</th>
@@ -232,7 +234,7 @@ function generateRandomPassword($length = 12) {
                                                 <td style="text-align: center;"><?php echo $lname.', '.$fname;?></td>
                                                 <td style="text-align: center;"><?php echo $row['status'];?></td>
                                                 <td style="text-align: center;">
-                                                    <button class="btn btn-warning" onclick="unarchiveApplicant(<?php echo $rowid; ?>)">Restore</button>
+                                                    <button class="btn btn-warning"onclick="archiveApplicant(<?php echo $rowid; ?>, 0)">Restore</button>
                                                 </td>
                                             </tr>
                                             <?php } ?>
@@ -248,19 +250,30 @@ function generateRandomPassword($length = 12) {
     </main>
 </div>
 
+
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
 <script src="js/app.js"></script>
 <script>
     $(document).ready(function () {
-        $("#filterTable").DataTable();
-        $("#filterTableEligible").DataTable();
-        $("#filterTableUneligible").DataTable();
-        $("#filterTableArchive").DataTable(); // Add DataTable for Archive tab
+        $("#filterTable").DataTable({
+            responsive: true
+        });
+        $("#filterTableEligible").DataTable({
+            responsive: true
+        });
+        $("#filterTableUneligible").DataTable({
+            responsive: true
+        });
+        $("#filterTableArchive").DataTable({
+            responsive: true 
+        });
     });
 </script>
 
+
 <script>
     function archiveApplicant(applicantId, status) {
-        var action = (status == 1) ? "archive" : "unarchive";
+        var action = (status == 1) ? "archive" : "restore";
         if (confirm("Are you sure you want to " + action + " this applicant?")) {
             var xhr = new XMLHttpRequest();
             xhr.open("POST", "archiveApplicant.php", true);

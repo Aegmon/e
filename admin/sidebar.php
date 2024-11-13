@@ -29,7 +29,7 @@ $cur_page = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+
 
 
 
-	<title>San Miguel Scholars</title>
+	<title>ASEEST</title>
 <link href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" rel="stylesheet">
 <link href="css/app.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -87,18 +87,18 @@ active{
 	<div class="wrapper">
 		<nav id="sidebar" class="sidebar js-sidebar" >
 			<div class="sidebar-content js-simplebar">
-			<a class="sidebar-brand" href="index.php">
+			<a class="sidebar-brand" href="home.php">
 			<div class="text-center">
 		<img src="#" class="img-fluid rounded-circle" width="250" height="250" />
 	        </div>
         </a>
 
-				<a class="sidebar-brand" href="index.php">
+				<a class="sidebar-brand" href="home.php">
           <span class="align-middle">Welcome Admin</span>
         </a>
 
 				<ul class="sidebar-nav">
-				<li class="sidebar-item <?php if( ($cur_page == 'index.php') ) {echo 'active ';} ?> ">
+				<li class="sidebar-item <?php if( ($cur_page == 'home.php') ) {echo 'active ';} ?> ">
 						<a class="sidebar-link" href="home.php">
               <i class="align-middle" style="color:#ffff;"data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
             </a>

@@ -85,12 +85,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 <div class="main">
-    <!-- Additional HTML Content -->
+      <nav class="navbar navbar-expand navbar-light navbar-bg">
+        <a class="sidebar-toggle js-sidebar-toggle">
+            <i class="hamburger align-self-center"></i>
+        </a>
+    </nav>
+
     <main class="content">
         <div class="container-fluid p-0">
               <div class="row">
                 <!-- Display Cards for each count -->
-                <div class="col-6">
+                 <div class="col-md-6 col-sm-12">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Total Applicants</h5>
@@ -98,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+               <div class="col-md-6 col-sm-12">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Total Scholars Granted</h5>
@@ -108,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </div>
             <div class="row">
-                <div class="col-6">
+                 <div class="col-md-6 col-sm-12">
                     <div class="card">
                         <div class="card-header">Doughnut Chart</div>
                         <div class="card-body">
@@ -116,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                 </div>
-                <div class="col-6">
+                  <div class="col-md-6 col-sm-12">
                     <div class="card">
                         <div class="card-header">Bar Chart</div>
                         <div class="card-body">
@@ -157,50 +162,59 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <!-- Announcement Table -->
     <div class="card mt-4">
-        <div class="card-header">
-            <h4>Announcements</h4>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Subject</th>
-                        <th>Date</th>
-                               <th>Content</th>
-                        <th>Image</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    // Fetch announcements from the database
-                    $result = mysqli_query($con, "SELECT * FROM announcements ORDER BY date DESC");
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        echo "<tr>";
-                        echo "<td>" . htmlspecialchars($row['subject']) . "</td>";
-                        echo "<td>" . htmlspecialchars($row['date']) . "</td>";
-                                      echo "<td>" . htmlspecialchars($row['content']) . "</td>";
-                        echo "<td>";
-                        if ($row['image']) {
-                            echo "<img src='uploads/" . htmlspecialchars($row['image']) . "' alt='Announcement Image' width='100'>";
-                        } else {
-                            echo "No Image";
-                        }
-                        echo "</td>";
-                        echo "</tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
+                <div class="card-header">
+                    <h4>Announcements</h4>
+                </div>
+                <div class="card-body">
+                    <table id="announcementTable" class="table table-bordered display responsive nowrap">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Date</th>
+                                <th>Content</th>
+                                <th>Image</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $result = mysqli_query($con, "SELECT * FROM announcements ORDER BY date DESC");
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                echo "<tr>";
+                                echo "<td>" . htmlspecialchars($row['subject']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['date']) . "</td>";
+                                echo "<td>" . htmlspecialchars($row['content']) . "</td>";
+                                echo "<td>";
+                                if ($row['image']) {
+                                    echo "<img src='uploads/" . htmlspecialchars($row['image']) . "' alt='Announcement Image' width='100'>";
+                                } else {
+                                    echo "No Image";
+                                }
+                                echo "</td>";
+                                echo "</tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 </div>
 
     </main>
 </div>
 
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-    // Doughnut chart displaying Eligible, Ineligible, Pending statuses
+$(document).ready(function() {
+    $('#announcementTable').DataTable({
+        responsive: true
+    });
+    
+    // Doughnut chart
     new Chart(document.getElementById("doughnutChart"), {
         type: "doughnut",
         data: {
@@ -223,32 +237,36 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Bar chart displaying Full Scholar, Grant Level 1, Grant Level 2
+    // Bar chart
     new Chart(document.getElementById("barChart"), {
         type: "bar",
         data: {
             labels: ["Full Scholar", "Grant Level 1", "Grant Level 2"],
             datasets: [{
+                label: "Scholarship Levels",
                 data: [
                     <?php echo $fullScholarCount; ?>,
                     <?php echo $grantLevel1Count; ?>,
                     <?php echo $grantLevel2Count; ?>
                 ],
-                backgroundColor: ["#28a745", "#17a2b8", "#6c757d"],
-                borderColor: "transparent"
+                backgroundColor: ["#007bff", "#ffc107", "#dc3545"],
+                borderColor: "transparent",
+                barPercentage: 0.75
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                yAxes: [{ ticks: { beginAtZero: true } }]
+                xAxes: [{ stacked: false }],
+                yAxes: [{ stacked: false }]
             },
-            legend: { display: false }
+            legend: { display: true }
         }
     });
 });
 </script>
+
 <script src="js/app.js"></script>
 </body>
 </html>

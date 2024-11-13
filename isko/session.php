@@ -24,7 +24,7 @@ if ($row) {
      $rel_stat = $row['civil_status'];
        $yr_lvl = $row['year_level'];
            $course = $row['year_course'];
-
+     $picture = $row['id_picture'];
 
 if ($rel_stat == 1) {
     $rel_stat = 'Single';

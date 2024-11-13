@@ -13,8 +13,7 @@ include("sidebar.php");
 				
 			</nav>
 
-			<main class="content" style="background:url('../assets/pubmatfour.png'); background-repeat: no-repeat;
-  background-size:  100%;">
+			<main class="content" >
 				<div class="container-fluid p-0">
 
 					

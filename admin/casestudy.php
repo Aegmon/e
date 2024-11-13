@@ -46,9 +46,9 @@ if ($applicant_id != '') {
                 <div id="main">
              
 
-                    <div class="button-container">
+                    <!-- <div class="button-container">
                         <button type="button" class="btn btn-primary" id="downloadButton">Download</button>
-                    </div>
+                    </div> -->
 
                     <div class="card">
                         <div class="card-body">
