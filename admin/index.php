@@ -22,27 +22,15 @@ if (isset($_POST['login'])) {
             if (password_verify($password, $sql1)) {
                 $_SESSION['userID'] = $sql4;
                $_SESSION['login_user'] = $email;
-                switch ($sql2) {
-                    case 'Scholar':
-                        if ($sql3 == '1') {
-                            header("location: ./isko/index.php");
-                        } elseif ($sql3 == '2') {
-                            header("location: ./isko/personalinfo.php?userID=$sql4");
-                        } else {
-                            echo '<script type="text/javascript">alert("Please Verify your email");</script>';
-                        }
-                        break;
-
-                    case 'Admin':
+            
+                  
                         $log = "Admin Login";
                         $con->query("INSERT INTO `logs`(`logs`) VALUES ('$log')");
                         header("location: otp.php");
-                        break;
+                  
 
-                    case 'Superadmin':
-                        header("location: ./superadmin/index.php");
-                        break;
-                }
+               
+                
             } else {
                 echo '<script type="text/javascript">alert("Check your inputs");</script>';
             }

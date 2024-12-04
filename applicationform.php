@@ -117,20 +117,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $json_data = file_get_contents($json_file);
             $decoded_data = json_decode($json_data, true);
 
-            foreach ($decoded_data as $person) {
-                if ($gen_average >= $person['GWA'] && $total_income <= $person['Income']) {
-                    $eligibility_status = $person['Eligible'];
+       foreach ($decoded_data as $person) {
+    if ($gen_average >= $person['GWA'] && $total_income <= $person['Income']) {
+        $eligibility_status = $person['Eligible'];
 
-                    if ($gen_average >= 90 && $gen_average <= 100) {
-                        $scholar_type = 'Full Scholarship';
-                    } elseif ($gen_average >= 88 && $gen_average <= 89) {
-                        $scholar_type = 'Grant Level 1';
-                    } elseif ($gen_average >= 85 && $gen_average <= 87) {
-                        $scholar_type = 'Grant Level 2';
-                    }
-                    break;
-                }
+        // If eligible, determine the scholarship type
+        if ($eligibility_status == 'Eligible') {
+            if ($gen_average >= 90 && $gen_average <= 100) {
+                $scholar_type = 'Full Scholarship';
+            } elseif ($gen_average >= 88 && $gen_average <= 89) {
+                $scholar_type = 'Grant Level 1';
+            } elseif ($gen_average >= 85 && $gen_average <= 87) {
+                $scholar_type = 'Grant Level 2';
             }
+        } else {
+            // If not eligible, set scholar_type to 'No Scholarship'
+            $scholar_type = 'No Scholarship';
+        }
+        break;
+    }
+}
 
             // Update eligibility
             $updateQuery = "UPDATE applicants SET 
