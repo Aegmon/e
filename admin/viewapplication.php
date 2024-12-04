@@ -17,11 +17,16 @@ if ($applicant_id != '') {
         echo "No applicant found with the given ID.";
         exit();
     }
+
+
+    $family_query = "SELECT * FROM family WHERE applicant_id = '$applicant_id'";
+    $family_result = mysqli_query($con, $family_query);
 } else {
     echo "No applicant ID provided.";
     exit();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -146,59 +151,43 @@ if ($applicant_id != '') {
 
     <div class="form-container family-background mb-4">
       <h4>Family Background</h4>
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label for="father_name">Father's Name</label>
-          <input type="text" class="form-control" value="<?php echo $applicant_data['father_name']; ?>" readonly>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="father_age">Father's Age</label>
-          <input type="number" class="form-control" value="<?php echo $applicant_data['father_age']; ?>" readonly>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="father_occupation">Father's Occupation</label>
-          <input type="text" class="form-control" value="<?php echo $applicant_data['father_occupation']; ?>" readonly>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="father_income">Father's Monthly Income</label>
-          <input type="number" class="form-control" value="<?php echo $applicant_data['father_income']; ?>" readonly>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="mother_name">Mother's Name</label>
-          <input type="text" class="form-control" value="<?php echo $applicant_data['mother_name']; ?>" readonly>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="mother_age">Mother's Age</label>
-          <input type="number" class="form-control" value="<?php echo $applicant_data['mother_age']; ?>" readonly>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="mother_occupation">Mother's Occupation</label>
-          <input type="text" class="form-control" value="<?php echo $applicant_data['mother_occupation']; ?>" readonly>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="mother_income">Mother's Monthly Income</label>
-          <input type="number" class="form-control" value="<?php echo $applicant_data['mother_income']; ?>" readonly>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label for="parent_contact">Contact no. of parent/s</label>
-          <input type="number" class="form-control" value="<?php echo $applicant_data['parent_contact']; ?>" readonly>
-        </div>
-   
-      </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Relationship</th>
+                          <th>Occupation</th>
+                <th>Income</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if (mysqli_num_rows($family_result) > 0) {
+                while ($family_row = mysqli_fetch_assoc($family_result)) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($family_row['name']) . "</td>";
+                    echo "<td>" . htmlspecialchars($family_row['relationship']) . "</td>";
+                          echo "<td>" . htmlspecialchars($family_row['occupation']) . "</td>";
+                    echo "<td>" . htmlspecialchars($family_row['monthly_income']) . "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='3' class='text-center'>No family composition details found.</td></tr>";
+            }
+            ?>
+        </tbody>
+    </table>
     </div>
 
   
     <div class="form-container family-background mb-4">
       <h4>Educational Background</h4>
       <div class="row">
-        <div class="col-md-6 mb-3">
+        <div class="col-md-12 mb-3">
           <label for="school_name">School Name</label>
           <input type="text" class="form-control" value="<?php echo $applicant_data['senior_high_school']; ?>" readonly>
         </div>
-        <div class="col-md-6 mb-3">
-          <label for="school_address">School Address</label>
-          <input type="text" class="form-control" value="<?php echo $applicant_data['senior_high_school_address']; ?>" readonly>
-        </div>
+     
      
       </div>
     </div>

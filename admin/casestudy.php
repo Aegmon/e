@@ -14,7 +14,9 @@ if ($applicant_id != '') {
         // Fetch the applicant data
         $applicant_data = mysqli_fetch_assoc($result);
         
-        // Calculate age based on date of birth if it's available
+  
+    $family_query = "SELECT * FROM family WHERE applicant_id = '$applicant_id'";
+    $family_result = mysqli_query($con, $family_query);
         if ($applicant_data['date_of_birth']) {
             $dob = new DateTime($applicant_data['date_of_birth']);
             $now = new DateTime();
@@ -74,17 +76,17 @@ if ($applicant_id != '') {
 
                                 <h3 class="mt-4">I. Identifying Information</h3>
                                 <div class="form-row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <label for="name-input" class="form-label">Name</label>
                                                          <input type="text" class="form-control" id="age-input" name="age" value="<?php echo $applicant_data['first_name'] . ' ' . $applicant_data['middle_name'] . ' ' . $applicant_data['last_name']; ?>" readonly>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label for="year" class="form-label">Academic Year</label>
-                                        <input type="text" class="form-control" id="year" name="year" required>
+                                        <input type="text" class="form-control" id="year" name="year" required value="<?php echo $applicant_data['year_level']; ?>" readonly>
                                     </div>
-                                         <div class="col-md-3">
+                                         <div class="col-md-6">
                                         <label for="course" class="form-label">Course</label>
-                                        <input type="text" class="form-control" id="course" name="course" required>
+                                        <input type="text" class="form-control" id="course" name="course" required value="<?php echo $applicant_data['year_course']; ?>" readonly>
                                     </div>
                                 </div>
 
@@ -143,40 +145,32 @@ if ($applicant_id != '') {
 
                                 <div class="form-group mt-5">
                                     <h3>II. FAMILY COMPOSITION</h3>
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Relationship to Client</th>
-                                                <th>Civil Status</th>
-                                                <th>Occupation</th>
-                                                <th>Monthly Income</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td><input type="text" class="form-control" name="name1" required></td>
-                                                <td><input type="text" class="form-control" name="relationship1" required></td>
-                                                <td><input type="text" class="form-control" name="status1" required></td>
-                                                <td><input type="text" class="form-control" name="occupation1" required></td>
-                                                <td><input type="text" class="form-control" name="income1" required></td>
-                                            </tr>
-                                            <tr>
-                                                <td><input type="text" class="form-control" name="name2"></td>
-                                                <td><input type="text" class="form-control" name="relationship2"></td>
-                                                <td><input type="text" class="form-control" name="status2"></td>
-                                                <td><input type="text" class="form-control" name="occupation2"></td>
-                                                <td><input type="text" class="form-control" name="income2"></td>
-                                            </tr>
-                                            <tr>
-                                                <td><input type="text" class="form-control" name="name3"></td>
-                                                <td><input type="text" class="form-control" name="relationship3"></td>
-                                                <td><input type="text" class="form-control" name="status3"></td>
-                                                <td><input type="text" class="form-control" name="occupation3"></td>
-                                                <td><input type="text" class="form-control" name="income3"></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                      <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Relationship</th>
+                          <th>Occupation</th>
+                <th>Income</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if (mysqli_num_rows($family_result) > 0) {
+                while ($family_row = mysqli_fetch_assoc($family_result)) {
+                    echo "<tr>";
+                    echo "<td>" . htmlspecialchars($family_row['name']) . "</td>";
+                    echo "<td>" . htmlspecialchars($family_row['relationship']) . "</td>";
+                          echo "<td>" . htmlspecialchars($family_row['occupation']) . "</td>";
+                    echo "<td>" . htmlspecialchars($family_row['monthly_income']) . "</td>";
+                    echo "</tr>";
+                }
+            } else {
+                echo "<tr><td colspan='3' class='text-center'>No family composition details found.</td></tr>";
+            }
+            ?>
+        </tbody>
+    </table>
                                 </div>
 
                                 <div class="form-group mt-3">
@@ -190,7 +184,11 @@ if ($applicant_id != '') {
                                 </div>
 
                                 <div class="form-group mt-3">
-                                    <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                                    <?php  if ($role == 'Superadmin'){
+
+                                       echo '<button type="submit" class="btn btn-primary btn-lg">Submit</button>';
+                                    }?>
+                              
                                 </div>
                                     <div class="text-center">
       <button type="button" class="btn btn-primary" onclick="printForm()">Print Form</button>

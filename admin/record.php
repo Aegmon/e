@@ -75,10 +75,10 @@ function generateRandomPassword($length = 12) {
                                 <a class="nav-link active" id="full-scholarship-tab" data-bs-toggle="tab" href="#full-scholarship" role="tab" aria-controls="full-scholarship" aria-selected="true">Full Scholarship</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="granted-level-1-tab" data-bs-toggle="tab" href="#granted-level-1" role="tab" aria-controls="granted-level-1" aria-selected="false">Granted Level 1</a>
+                                <a class="nav-link" id="granted-level-1-tab" data-bs-toggle="tab" href="#granted-level-1" role="tab" aria-controls="granted-level-1" aria-selected="false">Grant Level 1</a>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link" id="granted-level-2-tab" data-bs-toggle="tab" href="#granted-level-2" role="tab" aria-controls="granted-level-2" aria-selected="false">Granted Level 2</a>
+                                <a class="nav-link" id="granted-level-2-tab" data-bs-toggle="tab" href="#granted-level-2" role="tab" aria-controls="granted-level-2" aria-selected="false">Grant Level 2</a>
                             </li>
                                 <li class="nav-item" role="presentation">
                                     <a class="nav-link" id="uneligible-tab" data-bs-toggle="tab" href="#uneligible" role="tab" aria-controls="uneligible" aria-selected="false">Accounts</a>

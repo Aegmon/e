@@ -27,6 +27,7 @@ $row = mysqli_fetch_array($ses_sql);
              $course = $row['year_course'];
      $semester = $row['semester'];
      $gen_average= $row['gen_average'];
+          $scholarType= $row['scholarType'];
 if ($rel_stat == 1) {
     $rel_stat = 'Single';
 } elseif ($rel_stat == 2) {

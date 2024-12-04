@@ -1,4 +1,3 @@
-
 <?php
 include("connection.php");
 
@@ -20,117 +19,139 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $living_with_family = mysqli_real_escape_string($con, $_POST['living_with_family']);
     $living_with = mysqli_real_escape_string($con, $_POST['living_with']);
     $senior_high_school = mysqli_real_escape_string($con, $_POST['last_school']);
- 
-        $semester = mysqli_real_escape_string($con, $_POST['semester']);
+    $semester = mysqli_real_escape_string($con, $_POST['semester']);
     $gen_average = mysqli_real_escape_string($con, $_POST['gen_average']);
-
-
-    $year_level= mysqli_real_escape_string($con, $_POST['year_level']);
-        $course= mysqli_real_escape_string($con, $_POST['course']);
+    $year_level = mysqli_real_escape_string($con, $_POST['year_level']);
+    $course = mysqli_real_escape_string($con, $_POST['course']);
     $documents = $_FILES['documents'];
-  $emailCheckQuery = "SELECT * FROM applicants WHERE email = '$email'";
-    $emailCheckResult = mysqli_query($con, $emailCheckQuery);
 
-
-    $json_file = 'predictions_output.json';
-    $json_data = file_get_contents($json_file);
-    $decoded_data = json_decode($json_data, true); 
-    
     $eligibility_status = 'Not Eligible';
     $scholar_type = 'No Scholarship';
-  $id_picture_path = null;
-    if (mysqli_num_rows($emailCheckResult) > 0) {
+    $id_picture_path = null;
 
-        echo "<script>alert('Error: This email is already registered.');</script>";
-        echo "<script>window.history.back();</script>";
-    } else {
+    // Handle ID Picture Upload
     if (isset($_FILES['id_picture']) && $_FILES['id_picture']['error'] === 0) {
         $fileTmpPath = $_FILES['id_picture']['tmp_name'];
-        $fileName = uniqid() . '-' . $_FILES['id_picture']['name']; 
+        $fileName = uniqid() . '-' . $_FILES['id_picture']['name'];
         $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
         $allowedExtensions = ['jpg', 'jpeg', 'png'];
 
         if (in_array($fileExtension, $allowedExtensions)) {
             $uploadPath = 'uploads/' . $fileName;
-            
 
             if (move_uploaded_file($fileTmpPath, $uploadPath)) {
                 $id_picture_path = $uploadPath;
             } else {
-                echo "Error: Could not save the file.";
+                echo "Error: Could not save the ID picture.";
             }
         } else {
-            echo "Error: Invalid file type.";
+            echo "Error: Invalid file type for ID picture.";
         }
+    }
+
+    $emailCheckQuery = "SELECT * FROM applicants WHERE email = '$email'";
+    $emailCheckResult = mysqli_query($con, $emailCheckQuery);
+
+    if (mysqli_num_rows($emailCheckResult) > 0) {
+        echo "<script>alert('Error: This email is already registered.');</script>";
+        echo "<script>window.history.back();</script>";
     } else {
-        echo "Error: No file uploaded or file error.";
-    }
+        // Insert applicant details
+        $query = "INSERT INTO applicants (
+                    last_name, first_name, middle_name, date_of_birth, citizenship, contact_no, email,
+                    gender, home_address, civil_status, present_address, qualify, living_with_family,
+                    living_with, senior_high_school, gen_average, semester, year_level, year_course, id_picture
+                ) VALUES (
+                    '$last_name', '$first_name', '$middle_name', '$date_of_birth', '$citizenship', '$contact_no', '$email',
+                    '$gender', '$home_address', '$civil_status', '$present_address', '$qualify', '$living_with_family',
+                    '$living_with', '$senior_high_school', '$gen_average', '$semester', '$year_level', '$course', '$id_picture_path'
+                )";
 
-    foreach ($decoded_data as $person) {
-        if ($gen_average >= $person['GWA'] && 
-            (($father_income + $mother_income) >= $person['Income'])) {
-            
-            $eligibility_status = $person['Eligible']; 
+        if (mysqli_query($con, $query)) {
+            $applicant_id = mysqli_insert_id($con);
 
-      
-            if ($gen_average >= 90 && $gen_average <= 100) {
-                $scholar_type = 'Full Scholarship';
-            } elseif ($gen_average >= 88 && $gen_average <= 89) {
-                $scholar_type = 'Grant Level 1';
-            } elseif ($gen_average >= 85 && $gen_average <= 87) {
-                $scholar_type = 'Grant Level 2';
-            }
-            break;
-        }
-    }
+            // Insert family composition
+            $names = $_POST['name'];
+            $relationships = $_POST['relationship'];
+            $occupations = $_POST['occupation'];
+            $monthly_incomes = $_POST['monthly_income'];
 
-   $query = "INSERT INTO applicants (
-                last_name, first_name, middle_name, date_of_birth, citizenship, religion, contact_no, email,
-                gender, home_address, zip_code, civil_status, present_address, qualify, father_name, father_age,
-                father_occupation, father_income, mother_name, mother_age, mother_occupation, mother_income,
-                parent_contact, living_with_family, living_with, num_household, senior_high_school, 
-                senior_high_school_address, gen_average, contact_number, email_address, status, scholarType,
-                id_picture, semester , year_level , year_course
-            ) VALUES (
-                '$last_name', '$first_name', '$middle_name', '$date_of_birth', '$citizenship', '', '$contact_no', '$email',
-                '$gender', '$home_address', '', '$civil_status', '$present_address', '$qualify', '', '',
-                '', '', '', '', '', '',
-                '', '$living_with_family', '$living_with', '', '$senior_high_school', 
-                '', '$gen_average', '$contact_no', '$email', '$eligibility_status', 
-                '$scholar_type', '$id_picture_path','$semester','$year_level' , '$course'
-            )";
+            $total_income = 0;
 
-    // Execute the query to insert applicant data
-      if (mysqli_query($con, $query)) {
-        $applicant_id = mysqli_insert_id($con);
+            foreach ($names as $index => $name) {
+                $relationship = mysqli_real_escape_string($con, $relationships[$index]);
+                $occupation = mysqli_real_escape_string($con, $occupations[$index]);
+                $monthly_income = mysqli_real_escape_string($con, $monthly_incomes[$index]);
+                $total_income += $monthly_income;
 
-        // Process and insert uploaded documents
-        foreach ($documents['name'] as $key => $fileName) {
-            if ($documents['error'][$key] === UPLOAD_ERR_OK) {
-                $fileTmpPath = $documents['tmp_name'][$key];
-                $fileMime = mime_content_type($fileTmpPath);
-                $fileData = file_get_contents($fileTmpPath);
+                $familyQuery = "INSERT INTO family (
+                                    applicant_id, name, relationship, occupation, monthly_income
+                                ) VALUES (
+                                    '$applicant_id', '$name', '$relationship', '$occupation', '$monthly_income'
+                                )";
 
-                // Insert document details into the database
-                $stmt = $con->prepare("INSERT INTO applicationform (applicant_id, filename, mime_type, data, title) VALUES (?, ?, ?, ?, ?)");
-                $docTitle = ucfirst(str_replace('_', ' ', $key)); // Generate title from key
-                $stmt->bind_param("issss", $applicant_id, $fileName, $fileMime, $fileData, $docTitle);
-
-                if (!$stmt->execute()) {
-                    echo "Failed to upload {$fileName}.<br>";
+                if (!mysqli_query($con, $familyQuery)) {
+                    echo "Error inserting family composition: " . mysqli_error($con);
                 }
             }
+
+            // Process documents
+            foreach ($documents['name'] as $key => $fileName) {
+                if ($documents['error'][$key] === UPLOAD_ERR_OK) {
+                    $fileTmpPath = $documents['tmp_name'][$key];
+                    $fileMime = mime_content_type($fileTmpPath);
+                    $fileData = file_get_contents($fileTmpPath);
+
+                    $stmt = $con->prepare("INSERT INTO applicationform (applicant_id, filename, mime_type, data, title) VALUES (?, ?, ?, ?, ?)");
+                    $docTitle = ucfirst(str_replace('_', ' ', $key));
+                    $stmt->bind_param("issss", $applicant_id, $fileName, $fileMime, $fileData, $docTitle);
+
+                    if (!$stmt->execute()) {
+                        echo "Failed to upload {$fileName}.<br>";
+                    }
+                }
+            }
+
+            // Eligibility determination
+            $json_file = 'predictions_output.json';
+            $json_data = file_get_contents($json_file);
+            $decoded_data = json_decode($json_data, true);
+
+            foreach ($decoded_data as $person) {
+                if ($gen_average >= $person['GWA'] && $total_income <= $person['Income']) {
+                    $eligibility_status = $person['Eligible'];
+
+                    if ($gen_average >= 90 && $gen_average <= 100) {
+                        $scholar_type = 'Full Scholarship';
+                    } elseif ($gen_average >= 88 && $gen_average <= 89) {
+                        $scholar_type = 'Grant Level 1';
+                    } elseif ($gen_average >= 85 && $gen_average <= 87) {
+                        $scholar_type = 'Grant Level 2';
+                    }
+                    break;
+                }
+            }
+
+            // Update eligibility
+            $updateQuery = "UPDATE applicants SET 
+                                status = '$eligibility_status', 
+                                scholarType = '$scholar_type' 
+                            WHERE id = '$applicant_id'";
+
+            if (!mysqli_query($con, $updateQuery)) {
+                echo "Error updating eligibility: " . mysqli_error($con);
+            }
+
+            echo "Application submitted successfully!";
+            header("Location: thankyou.php");
+        } else {
+            echo "Error: " . $query . "<br>" . mysqli_error($con);
         }
-
-        echo "Application submitted successfully!";
-        header("Location: thankyou.php");
-    } else {
-        echo "Error: " . $query . "<br>" . mysqli_error($con);
     }
-
-  }
 }
 ?>
+
+
 
 
 

@@ -9,9 +9,25 @@ $fullScholarCount = getCountScholarType('Full Scholarship');
 $grantLevel1Count = getCountScholarType('Grant Level 1');
 $grantLevel2Count = getCountScholarType('Grant Level 2');
 $totalApplicantsCount = getTotalApplicantsCount();
-$totalScholarsCount = getCountGranted();  // Only applicants with status "Granted"
+$totalScholarsCount = getCountGranted(); 
+$totalScholarsCountgraduated = getCountGrantedgraduated(); 
 
-// Function to fetch total count of applicants
+$yespayout = getpayout('Received');
+$nopayout = getpayout('Not yet Received');
+
+function getpayout($status) {
+    global $con; 
+    $query = "SELECT COUNT(*) as count FROM applicants WHERE payout = '$status'";
+    $result = mysqli_query($con, $query);
+    
+    if (!$result) {
+        die("Query failed: " . mysqli_error($con));
+    }
+
+    $row = mysqli_fetch_assoc($result);
+    return $row['count'];
+}
+
 function getTotalApplicantsCount() {
     global $con;
 
@@ -62,7 +78,19 @@ function getCount($status) {
 }
 function getCountGranted() {
     global $con; 
-    $query = "SELECT COUNT(*) as count FROM applicants WHERE status in('New','Retained','Promoted','Demoted','Granted')";
+    $query = "SELECT COUNT(*) as count FROM applicants WHERE status in('New','Retained','Promoted','Granted')";
+    $result = mysqli_query($con, $query);
+    
+    if (!$result) {
+        die("Query failed: " . mysqli_error($con));
+    }
+
+    $row = mysqli_fetch_assoc($result);
+    return $row['count'];
+}
+function getCountGrantedgraduated() {
+    global $con; 
+    $query = "SELECT COUNT(*) as count FROM applicants WHERE status = 'Graduated'";
     $result = mysqli_query($con, $query);
     
     if (!$result) {
@@ -116,6 +144,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Error: " . mysqli_error($con);
     }
 }
+
+
+function getIneligibleCountPerBarangay() {
+    global $con;
+    $query = "SELECT home_address, COUNT(*) as count 
+              FROM applicants 
+              GROUP BY home_address";
+    $result = mysqli_query($con, $query);
+    
+    if (!$result) {
+        die("Query failed: " . mysqli_error($con));
+    }
+
+    $data = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data[] = ['label' => $row['home_address'], 'count' => (int)$row['count']];
+    }
+    return $data;
+}
+
+function getIneligibleCountPerCourse() {
+    global $con;
+    $query = "SELECT year_course, COUNT(*) as count 
+              FROM applicants 
+              GROUP BY year_course";
+    $result = mysqli_query($con, $query);
+
+    if (!$result) {
+        die("Query failed: " . mysqli_error($con));
+    }
+
+    $data = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $data[] = ['label' => $row['year_course'], 'count' => (int)$row['count']];
+    }
+    return $data;
+}
+
+// Fetch ineligible counts per barangay and course
+$ineligiblePerBarangay = getIneligibleCountPerBarangay();
+$ineligiblePerCourse = getIneligibleCountPerCourse();
+$barangayLabels = json_encode(array_column($ineligiblePerBarangay, 'label'));
+$barangayCounts = json_encode(array_column($ineligiblePerBarangay, 'count'));
+
+$courseLabels = json_encode(array_column($ineligiblePerCourse, 'label'));
+$courseCounts = json_encode(array_column($ineligiblePerCourse, 'count'));
 ?>
 
 
@@ -150,8 +224,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                <div class="col-md-6 col-sm-12">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Total Scholars </h5>
+                            <h5 class="card-title">Total Scholars(Active) </h5>
                             <h1><?php echo $totalScholarsCount; ?></h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Display Cards for each count -->
+                 <div class="col-md-3 col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Scholars (Received Payout)</h5>
+                            <h1><?php echo $yespayout; ?></h1>
+                        </div>
+                    </div>
+                </div>
+                  <div class="col-md-3 col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Scholars (Not yet Received Payout)</h5>
+                            <h1><?php echo $nopayout; ?></h1>
+                        </div>
+                    </div>
+                </div>
+               <div class="col-md-6 col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Scholars(Graduated) </h5>
+                            <h1><?php echo $totalScholarsCountgraduated; ?></h1>
                         </div>
                     </div>
                 </div>
@@ -170,6 +271,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="card-header">Number of Schlarship Type</div>
                         <div class="card-body">
                             <canvas id="barChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="row">
+                 <div class="col-md-6 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">Number of Scholars Per Barangay</div>
+                        <div class="card-body">
+                            <canvas id="barChart1"></canvas>
+                        </div>
+                    </div>
+                </div>
+                  <div class="col-md-6 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">Number of Scholars Per Course</div>
+                        <div class="card-body">
+                            <canvas id="barChart2"></canvas>
                         </div>
                     </div>
                 </div>
@@ -318,7 +437,64 @@ new Chart(document.getElementById("barChart"), {
         legend: { display: true }
     }
 });
+ new Chart(document.getElementById("barChart1"), {
+        type: "bar",
+        data: {
+            labels: <?php echo $barangayLabels; ?>,
+            datasets: [{
+                label: "Demoted Applicants per Barangay",
+                data: <?php echo $barangayCounts; ?>,
+                backgroundColor: "#007bff",
+                borderColor: "transparent",
+                barPercentage: 0.75
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                xAxes: [{ stacked: false }],
+                yAxes: [{
+                    stacked: false,
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                }]
+            },
+            legend: { display: true }
+        }
+    });
 
+    // Bar chart for Demoted Applicants per Course
+    new Chart(document.getElementById("barChart2"), {
+        type: "bar",
+        data: {
+            labels: <?php echo $courseLabels; ?>,
+            datasets: [{
+                label: "Demoted Applicants per Course",
+                data: <?php echo $courseCounts; ?>,
+                backgroundColor: "#dc3545",
+                borderColor: "transparent",
+                barPercentage: 0.75
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                xAxes: [{ stacked: false }],
+                yAxes: [{
+                    stacked: false,
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: 1
+                    }
+                }]
+            },
+            legend: { display: true }
+        }
+    });
 });
 </script>
 

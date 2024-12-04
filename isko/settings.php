@@ -9,7 +9,6 @@ function log_error($message) {
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['save'])) {
-        // Update Personal Information
         $applicant_id = $_POST['applicant_id'];
         $fname = $_POST['fname'];
         $lname = $_POST['lname'];
@@ -21,8 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $semester = $_POST['semester'];
         $gen_average = $_POST['gen_average'];
 
-        // File upload handling
-        $upload_dir = 'uploads/'; // Directory to store uploaded files
+        $upload_dir = '../uploads/'; // Directory to store uploaded files
         $rog_path = null;
         $cor_path = null;
 
@@ -48,69 +46,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
-        // Update applicants table with file paths
-        $updateApplicantQuery = "UPDATE applicants 
-                                 SET first_name = ?, last_name = ?, contact_no = ?, civil_status = ?, home_address = ?, year_level = ?, year_course = ?, semester = ?, gen_average = ?, rog_path = ?, cor_path = ?
-                                 WHERE id = ?";
-        $stmt = $con->prepare($updateApplicantQuery);
-
-        if ($stmt) {
-            $stmt->bind_param("sssisssdsssi", $fname, $lname, $number, $rel_stat, $address, $yr_lvl, $course, $semester, $gen_average, $rog_path, $cor_path, $applicant_id);
-
-            if ($stmt->execute()) {
-                echo "<script>alert('Applicant updated successfully!');
-                            window.location.href = 'index.php';
-                </script>";
-            } else {
-                echo "<script>alert('Failed to update applicant.');</script>";
-                log_error("Failed to update applicants table. Error: " . $stmt->error);
-            }
-        } else {
-            echo "<script>alert('Failed to prepare statement for applicant update.');</script>";
-            log_error("Failed to prepare statement for applicants update. Error: " . $con->error);
-        }
-    }
-
-    if (isset($_POST['update_account'])) {
-        // Update Email and Password
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $cpassword = $_POST['cpassword'];
-        $applicant_id = $_POST['applicant_id'];
-
-        // Validate passwords
-        if ($password === $cpassword) {
-            // Hash the password for security
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-            // Update scholaraccount table
-            $updateAccountQuery = "UPDATE scholaraccount 
-                                   SET email = ?, password = ? 
-                                   WHERE application_id = ?";
-            $stmt = $con->prepare($updateAccountQuery);
+        // Insert into COROG table
+        if ($rog_path || $cor_path) {
+            $insertCOROGQuery = "INSERT INTO COROG (applicant_id, rog_path, cor_path) VALUES (?, ?, ?)";
+            $stmt = $con->prepare($insertCOROGQuery);
 
             if ($stmt) {
-                $stmt->bind_param("sss", $email, $hashedPassword, $applicant_id);
+                $stmt->bind_param("iss", $applicant_id, $rog_path, $cor_path);
 
                 if ($stmt->execute()) {
-                    echo "<script>
-                        alert('Account updated successfully!');
-                        window.location.href = 'index.php';
+                    echo "<script>alert('COR and ROG uploaded successfully!');
+                                window.location.href = 'index.php';
                     </script>";
                 } else {
-                    echo "<script>alert('Failed to update account.');</script>";
-                    log_error("Failed to update scholaraccount table. Error: " . $stmt->error);
+                    echo "<script>alert('Failed to upload COR and ROG.');</script>";
+                    log_error("Failed to insert into COROG table. Error: " . $stmt->error);
                 }
             } else {
-                echo "<script>alert('Failed to prepare statement for account update.');</script>";
-                log_error("Failed to prepare statement for scholaraccount update. Error: " . $con->error);
+                echo "<script>alert('Failed to prepare statement for COROG insertion.');</script>";
+                log_error("Failed to prepare statement for COROG insertion. Error: " . $con->error);
             }
-        } else {
-            echo "<script>alert('Passwords do not match.');</script>";
-            log_error("Password mismatch for applicant_id: $applicant_id.");
         }
     }
 }
+
+
+
 ?>
 
 <div class="main" style="background-size: 100%;">
@@ -134,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <img src="../<?php echo $picture ?>" alt="" class="img-fluid rounded-circle mb-2" width="178" height="178" />
                             </div>
                             <form action="" method="post" enctype="multipart/form-data">
-                                <input type="hidden" name="applicant_id" value="<?php echo $applicant_id ?>">
+                                <input type="hidden" name="applicant_id" value="<?php echo $id ?>">
                                 <div class="mb-3">
                                     <label class="form-label">First Name</label>
                                     <input type="text" class="form-control" name="fname" value="<?php echo $fname ?>">
@@ -195,12 +156,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <!-- Email and Password Form -->
                 <div class="col-12 col-lg-6">
-                    <div class="card">
+<div class="row">
+
+       <div class="col-12 col-lg-6">
+                <div class="card">
                         <div class="card-header">
                             <h5 class="card-title mb-0">Email & Password</h5>
                         </div>
                         <form action="" method="post">
-                            <input type="hidden" name="applicant_id" value="<?php echo $applicant_id ?>">
+                            <input type="hidden" name="applicant_id" value="<?php echo $id ?>">
                             <div class="card-body">
                                 <div class="mb-3">
                                     <label class="form-label">Email</label>
@@ -220,8 +184,83 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
                         </form>
                     </div>
+</div>
+       <div class="col-12 col-lg-6">
+                       <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Uploaded ROG and COR Files</h5>
+                </div>
+                <div class="card-body">
+                    <?php
+                    // Fetch uploaded ROG and COR files for the specific applicant ID
+                    $query = "SELECT * FROM COROG WHERE applicant_id = ?";
+                    $stmt = $con->prepare($query);
+                    $stmt->bind_param("i", $id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+                    if ($result && $result->num_rows > 0) {
+                    ?>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ROG</th>
+                                    <th>COR</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = $result->fetch_assoc()) { ?>
+                                    <tr>
+                                        <td>
+                                            <?php if ($row['rog_path']) { ?>
+                                                <a href="<?php echo htmlspecialchars($row['rog_path']); ?>" download>Download ROG</a>
+                                            <?php } else { ?>
+                                                No File
+                                            <?php } ?>
+                                        </td>
+                                        <td>
+                                            <?php if ($row['cor_path']) { ?>
+                                                <a href="<?php echo htmlspecialchars($row['cor_path']); ?>" download>Download COR</a>
+                                            <?php } else { ?>
+                                                No File
+                                            <?php } ?>
+                                        </td>
+                                      
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    <?php
+                    } else {
+                        echo "<div class='alert alert-info'>No files uploaded yet.</div>";
+                    }
+                    ?>
                 </div>
             </div>
+                
+
+</div>
+
+
+
+            
+                   
+                </div>
+             
+            </div>
+
+            <!-- Display Uploaded Files -->
+         
         </div>
     </main>
 </div>
+
+		</div>
+	</div>
+
+	<script src="js/app.js"></script>
+
+</body>
+
+</html>
