@@ -1,13 +1,12 @@
 <?php
 include("connection.php");
-$token = $_GET['token'];
-$query = "SELECT * from userdata where token='$token'";
+$application_id = $_GET['application_id'];
+$query = "SELECT * from scholaraccount where application_id='$application_id'";
 $ses_sql = mysqli_query($con,$query);
 $row = mysqli_fetch_assoc($ses_sql);
 	if(isset($_POST['reset'])){
 		$password = $con->real_escape_string($_POST['password']);
 		$cpassword = $con->real_escape_string($_POST['cpassword']);
-		$userID = $con->real_escape_string($_POST['userID']);
 		if ($password != $cpassword){
 			echo '<script type="text/javascript">alert("Password mismatch, Please try again");</script>';
 		 }else{
@@ -15,7 +14,7 @@ $row = mysqli_fetch_assoc($ses_sql);
 					
 				
 					// $con->query("UPDATE `userdata` SET `Password` = 'dasdsadsaa' WHERE userID = '$userID'");
-				$con->query("UPDATE `userdata` SET `Password` = '$hashedPassword' WHERE userID = '$userID'");
+				$con->query("UPDATE `scholaraccount` SET `password` = '$hashedPassword' WHERE application_id = '$application_id'");
 					echo '<script type="text/javascript">alert("Reset Password Successful");
 					window.location = "login.php";</script>';
             
@@ -70,19 +69,20 @@ $row = mysqli_fetch_assoc($ses_sql);
 									<form class="widget-form" id="login-form" action="" method="post">
 										<div class="mb-3">
 											<label class="form-label">Password</label>
-											<input class="form-control form-control-lg" type="hidden" name="userID" value="<?php echo $row['userID'] ?>" />
-											<input class="form-control form-control-lg" type="password" name="email" required="" />
+								
+											<input class="form-control form-control-lg" type="password" name="password" required="" />
 										</div>
                                         <div class="mb-3">
 											<label class="form-label">Confirm Password</label>
-											<input class="form-control form-control-lg" type="password" name="email" required="" />
+											<input class="form-control form-control-lg" type="password" name="cpassword" required="" />
 										</div>
+								
 								
 									
 										<div class="text-center mt-3">
-											<input type="submit"  class="btn btn-lg btn-primary" Value="Reset" name="reset" style="background-color: #297506; border-color: border-color: coral;"></br>
+											<input type="submit"  class="btn btn-lg btn-primary" Value="Reset" name="reset" ></br>
 											<!-- <button type="submit" class="btn btn-lg btn-primary">Sign in</button> -->
-											 <a href="login.php">Already have an account?</a>
+											 
 										</div>
 									</form>
 								</div>

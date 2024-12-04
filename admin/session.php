@@ -1,6 +1,10 @@
 <?php 
 include('../connection.php');
 session_start();
+if (!isset($_SESSION['userID'])) {
+    header("location: index.php");
+    exit();
+}
 
 $user_check = $_SESSION['login_user'];
 $query = "SELECT * from userdata where Email='$user_check'";

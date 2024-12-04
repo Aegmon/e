@@ -1,49 +1,54 @@
 <?php
 include('../connection.php');
 
-if (isset($_GET['applicant_id']) && isset($_GET['file_type'])) {
+if (isset($_GET['applicant_id']) && isset($_GET['title'])) {
     $applicant_id = mysqli_real_escape_string($con, $_GET['applicant_id']);
-    $file_type = mysqli_real_escape_string($con, $_GET['file_type']); // Expecting 'cor' or 'rog'
+    $file_type = mysqli_real_escape_string($con, $_GET['title']); // 'cor' or 'rog'
 
-    // Determine columns based on file type
+    // Determine the columns to fetch based on file type
     if ($file_type === 'cor') {
         $filename_col = 'cor_filename';
-        $mime_type_col = 'cor_mime_type';
-        $data_col = 'cor_data';
+        $file_path_col = 'cor_file_path';  // Path of the file
     } elseif ($file_type === 'rog') {
         $filename_col = 'rog_filename';
-        $mime_type_col = 'rog_mime_type';
-        $data_col = 'rog_data';
+        $file_path_col = 'rog_file_path';  // Path of the file
     } else {
         die("Invalid file type specified.");
     }
 
-    // Query the database to fetch the file details using applicant_id
-    $qry = "SELECT $filename_col AS filename, $mime_type_col AS mime_type, $data_col AS data FROM applicants WHERE id = '$applicant_id'";
+    // Query to fetch the file path and filename based on applicant_id
+    $qry = "SELECT $filename_col, $file_path_col FROM applicants WHERE id = '$applicant_id'";
     $result = mysqli_query($con, $qry);
 
     if ($result && mysqli_num_rows($result) > 0) {
         $row = mysqli_fetch_assoc($result);
-        $filename = $row['filename'];
-        $mime_type = $row['mime_type'];
-        $file_data = $row['data'];
+        $filename = $row[$filename_col];
+        $file_path = $row[$file_path_col];
 
-        if ($file_data) {
-            // Send the appropriate headers to force the download
+        if ($file_path && file_exists($file_path)) {
+            // Clear any previous output buffer
+            if (ob_get_level()) {
+                ob_end_clean();
+            }
+
+            // Get the file MIME type
+            $mime_type = mime_content_type($file_path);
+
+            // Send headers to force the download
             header('Content-Type: ' . $mime_type);
             header('Content-Disposition: attachment; filename="' . $filename . '"');
-            header('Content-Length: ' . strlen($file_data));
+            header('Content-Length: ' . filesize($file_path));
             header('Cache-Control: no-store, no-cache, must-revalidate');
             header('Expires: 0');
 
-            // Output the file data
-            echo $file_data;
+            // Output the file content
+            readfile($file_path);
             exit;
         } else {
-            echo "File data is empty.";
+            echo "File not found.";
         }
     } else {
-        echo "File not found.";
+        echo "No file found for the specified applicant.";
     }
 } else {
     echo "Applicant ID or file type not specified.";

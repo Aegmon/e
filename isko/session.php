@@ -2,16 +2,15 @@
 include('../connection.php');
 session_start();
 
-$id = $_SESSION['id'];
+$id = $_SESSION['application_id'];
 
-// Query to fetch the applicant details
 $query = "SELECT * FROM applicants WHERE id='$id'";
 $ses_sql = mysqli_query($con, $query);
 
-// Fetch the row and assign the values directly
 $row = mysqli_fetch_array($ses_sql);
 
-if ($row) {
+    $applicant_id = $row['id'];
+
     $fname = $row['first_name'];
     $lname = $row['last_name'];
     $grade = $row['gen_average'];
@@ -25,7 +24,9 @@ if ($row) {
        $yr_lvl = $row['year_level'];
            $course = $row['year_course'];
      $picture = $row['id_picture'];
-
+             $course = $row['year_course'];
+     $semester = $row['semester'];
+     $gen_average= $row['gen_average'];
 if ($rel_stat == 1) {
     $rel_stat = 'Single';
 } elseif ($rel_stat == 2) {
@@ -37,5 +38,5 @@ if ($rel_stat == 1) {
 } else {
     $rel_stat = 'Unknown';
 }
-}
+
 ?>

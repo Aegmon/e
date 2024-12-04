@@ -21,7 +21,7 @@ if (isset($_POST['login'])) {
 
             if (password_verify($password, $sql1)) {
                 $_SESSION['userID'] = $sql4;
-    $_SESSION['login_user'] = $email;
+               $_SESSION['login_user'] = $email;
                 switch ($sql2) {
                     case 'Scholar':
                         if ($sql3 == '1') {
@@ -107,7 +107,7 @@ if (isset($_POST['login'])) {
                             <input type="checkbox">
                             <span class="check">Remember Me</span>
                         </label>
-                        <a href="forgotpass.html" title="Forgot Password" id="link-reset">Forgot Password?</a>
+                        <a href="forgetpassword.php" title="Forgot Password" id="link-reset">Forgot Password?</a>
                     </div>
 
                     <div class="input-field">

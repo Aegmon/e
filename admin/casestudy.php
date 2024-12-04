@@ -33,6 +33,12 @@ if ($applicant_id != '') {
 
 
 ?>
+<style>
+  @media print {
+    .btn {
+      display: none; /* Hides the button during print */
+    }
+  }</style>
 <div class="main">
     <nav class="navbar navbar-expand navbar-light navbar-bg">
         <a class="sidebar-toggle js-sidebar-toggle">
@@ -72,9 +78,13 @@ if ($applicant_id != '') {
                                         <label for="name-input" class="form-label">Name</label>
                                                          <input type="text" class="form-control" id="age-input" name="age" value="<?php echo $applicant_data['first_name'] . ' ' . $applicant_data['middle_name'] . ' ' . $applicant_data['last_name']; ?>" readonly>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="year-course-input" class="form-label">Year & Course</label>
-                                        <input type="text" class="form-control" id="year-course-input" name="year_course" required>
+                                    <div class="col-md-3">
+                                        <label for="year" class="form-label">Academic Year</label>
+                                        <input type="text" class="form-control" id="year" name="year" required>
+                                    </div>
+                                         <div class="col-md-3">
+                                        <label for="course" class="form-label">Course</label>
+                                        <input type="text" class="form-control" id="course" name="course" required>
                                     </div>
                                 </div>
 
@@ -182,6 +192,9 @@ if ($applicant_id != '') {
                                 <div class="form-group mt-3">
                                     <button type="submit" class="btn btn-primary btn-lg">Submit</button>
                                 </div>
+                                    <div class="text-center">
+      <button type="button" class="btn btn-primary" onclick="printForm()">Print Form</button>
+    </div>
                             </form>
                         </div>
                     </div>
@@ -290,8 +303,10 @@ document.getElementById('acceptButton').addEventListener('click', function() {
         method: 'POST',
         body: new URLSearchParams({
             applicant_id: applicantId,
-            status: 'Granted',
-            scholarship_type: 'NULL'
+            status: 'New',
+            scholarship_type: 'NULL',
+                 year: 'NULL',
+            course:  'NULL'
         }),
     }).then(response => response.json())
     .then(data => {
@@ -306,55 +321,49 @@ document.getElementById('acceptButton').addEventListener('click', function() {
 });
 
 // Save Scholarship Type and update applicant record
-document.getElementById('saveScholarshipButton').addEventListener('click', function() {
+document.getElementById('saveScholarshipButton').addEventListener('click', function () { 
     const selectedScholarshipType = document.querySelector('input[name="scholarshipType"]:checked').value;
-    const applicantId = '<?php echo $applicant_id; ?>'; // Retrieve the applicant ID dynamically
-    
-    // AJAX request to update scholarship type
+    const applicantId = '<?php echo $applicant_id; ?>';
+console.log(applicantId)
+    // Get values of year and course
+    const year = document.getElementById('year').value;
+    const course = document.getElementById('course').value;
+
+    // AJAX request to update scholarship type and other details
     fetch('updateApplicantStatus.php', {
         method: 'POST',
         body: new URLSearchParams({
             applicant_id: applicantId,
-            status: 'Granted',
-            scholarship_type: selectedScholarshipType
+            status: 'New',
+            scholarship_type: selectedScholarshipType,
+            year: year,
+            course: course
         }),
     }).then(response => response.json())
     .then(data => {
         if (data.success) {
             // Close modal and show success message
             $('#scholarshipModal').modal('hide');
-            alert('Scholarship type updated successfully.');
+            alert('Scholarship type and details updated successfully.');
+              window.location.href = 'record.php';
         } else {
-            alert('Error updating scholarship type.');
-        }
-    });
-});
-document.getElementById('caseStudyForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // Prevent the form from submitting normally
-
-    let formData = new FormData(this); // FormData to send the form data
-
-    fetch('insert_data.php', {
-        method: 'POST',
-        body: formData,
-    })
-    .then(response => response.json()) // Expecting JSON response
-    .then(data => {
-        if (data.success) {
-            alert("Form submitted successfully!");
-            // Optionally, redirect or update UI
-        } else {
-            alert("Form submission failed: " + data.message);
+            alert('Error updating scholarship details.');
         }
     })
     .catch(error => {
-    //      console.error('Error submitting form:', error);
-    // alert('Error submitting form: ' + error.message); 
+        console.error('Error:', error);
+        alert('An unexpected error occurred.');
     });
 });
 
-</script>
 
+
+</script>
+  <script>
+      function printForm() {
+          window.print();
+      }
+    </script>
 </body>
 
 </html>

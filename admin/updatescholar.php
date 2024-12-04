@@ -48,41 +48,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $applicant) {
         foreach ($_FILES['documents']['tmp_name'] as $key => $tmp_name) {
             if ($_FILES['documents']['error'][$key] === UPLOAD_ERR_OK) {
                 $filename = basename($_FILES['documents']['name'][$key]);
+                $file_path = 'uploads/' . $filename; // Define the file path where the file will be stored
                 $mime_type = $_FILES['documents']['type'][$key];
-                $data = file_get_contents($tmp_name);
 
-                if ($key === 'cor_image') {
-                    // Update the "cor" document fields
-                    $stmt = $con->prepare("UPDATE applicants SET 
-                        cor_filename = ?, cor_mime_type = ?, cor_data = ? 
-                        WHERE id = ?");
-                    
-                    if ($stmt === false) {
-                        die("Error preparing SQL statement for cor_image: " . $con->error);
+                // Move the file to the uploads folder
+                if (move_uploaded_file($tmp_name, $file_path)) {
+                    // Update the file path in the database
+                    if ($key === 'cor_image') {
+                        $stmt = $con->prepare("UPDATE applicants SET cor_filename = ?, cor_mime_type = ?, cor_file_path = ? WHERE id = ?");
+                        $stmt->bind_param("sssi", $filename, $mime_type, $file_path, $applicant_id);
+                    } elseif ($key === 'rog_image') {
+                        $stmt = $con->prepare("UPDATE applicants SET rog_filename = ?, rog_mime_type = ?, rog_file_path = ? WHERE id = ?");
+                        $stmt->bind_param("sssi", $filename, $mime_type, $file_path, $applicant_id);
                     }
 
-                    $stmt->bind_param("ssbi", $filename, $mime_type, $data, $applicant_id);
-
-                } elseif ($key === 'rog_image') {
-                    // Update the "rog" document fields
-                    $stmt = $con->prepare("UPDATE applicants SET 
-                        rog_filename = ?, rog_mime_type = ?, rog_data = ? 
-                        WHERE id = ?");
-                    
-                    if ($stmt === false) {
-                        die("Error preparing SQL statement for rog_image: " . $con->error);
+                    // Execute the statement and check for success
+                    if ($stmt->execute()) {
+                        echo "File {$filename} uploaded and updated successfully.<br>";
+                    } else {
+                        echo "Failed to update {$filename}. Error: " . $stmt->error . "<br>";
                     }
-
-                    $stmt->bind_param("ssbi", $filename, $mime_type, $data, $applicant_id);
-                }
-
-                // Execute the statement and check for success
-                if ($stmt->execute()) {
-                    echo "File {$filename} updated successfully.<br>";
+                    $stmt->close();
                 } else {
-                    echo "Failed to update {$filename}. Error: " . $stmt->error . "<br>";
+                    echo "Failed to move file {$filename} to uploads folder.<br>";
                 }
-                $stmt->close();
             } else {
                 echo "Error uploading file: " . $_FILES['documents']['name'][$key] . "<br>";
             }
@@ -90,6 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $applicant) {
     }
 }
 ?>
+
+<!-- HTML Form remains the same -->
 
 
 <div class="main">
@@ -130,8 +121,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $applicant) {
                                         <label for="scholarType">Scholarship Type</label>
                                         <select class="form-control" name="scholarType" required>
                                             <option value="Full Scholarship" <?php echo ($applicant['scholarType'] == 'Full Scholarship') ? 'selected' : ''; ?>>Full Scholarship</option>
-                                            <option value="Grantee Level 1" <?php echo ($applicant['scholarType'] == 'Grantee Level 1') ? 'selected' : ''; ?>>Grantee Level 1</option>
-                                            <option value="Grantee Level 2" <?php echo ($applicant['scholarType'] == 'Grantee Level 2') ? 'selected' : ''; ?>>Grantee Level 2</option>
+                                            <option value="Grant Level 1" <?php echo ($applicant['scholarType'] == 'Grant Level 1') ? 'selected' : ''; ?>>Grantee Level 1</option>
+                                            <option value="Grant Level 2" <?php echo ($applicant['scholarType'] == 'Grant Level 2') ? 'selected' : ''; ?>>Grantee Level 2</option>
                                         </select>
                                     </div>
                                     <div class="form-group">

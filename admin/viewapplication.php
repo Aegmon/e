@@ -39,8 +39,34 @@ if ($applicant_id != '') {
       display: none; /* Hides the button during print */
     }
   }
+   .back-arrow-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+        .back-arrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #ffffff;
+            color: #333;
+            border-radius: 50%;
+            text-decoration: none;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            font-size: 1.25rem;
+            transition: color 0.2s, background-color 0.2s;
+        }
+        .back-arrow:hover {
+            color: #ffffff;
+            background-color: #007bff;
+        }
 </style>
 <body class="container my-5">
+  <div class="back-arrow-container">
+       <button class="back-arrow" onclick="history.back()">←</button> 
+</div>
   <form id="applicationForm" action="" method="post" enctype="multipart/form-data">
     <header class="mb-4">
       <h2 class="text-center">Application Form</h2>
@@ -177,7 +203,39 @@ if ($applicant_id != '') {
       </div>
     </div>
   </form>
-   <div class="text-center">
+<div class="row mb-3">
+  <div class="col-md-3">
+    <div class="text-center">
+      <a href="download.php?applicant_id=<?php echo $applicant_id; ?>&title=Birth cert" class="btn btn-primary">Birth Certificate</a>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="text-center">
+      <a href="download.php?applicant_id=<?php echo $applicant_id; ?>&title=Indigency file" class="btn btn-primary">Indigency File</a>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="text-center">
+      <a href="download.php?applicant_id=<?php echo $applicant_id; ?>&title=Good moral" class="btn btn-primary">Good Moral</a>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="text-center">
+      <a href="download.php?applicant_id=<?php echo $applicant_id; ?>&title=Form 137" class="btn btn-primary">Form 137</a>
+    </div>
+  </div>
+</div>
+<div class="text-center mb-4">
+  <a href="download.php?applicant_id=<?php echo $applicant_id; ?>&title=Voters id" class="btn btn-primary">Voter's ID</a>
+</div>
+    
+
+
+
+
+
+
+       <div class="text-center">
       <button type="button" class="btn btn-primary" onclick="printForm()">Print Form</button>
     </div>
 </body>

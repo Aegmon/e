@@ -858,6 +858,7 @@ hr {
   background: #2921bd;
   color: white;
   margin-left: 20px;
+  cursor: pointer;
 }
 .cont{
   display: inline-flex;
@@ -874,56 +875,51 @@ hr {
   height: auto;
   padding: 2rem;
 }
+.btn-custom {
+      background-color: #2F27CE;
+      color: #fff;
+      font-weight: bold;
+      text-transform: uppercase;
+      transition: background-color 0.3s;
+    }
 
+.btn-custom:hover {
+    background-color: #241EA5;
+}
+
+.section-heading {
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
 
 
 /* FOOTER */
 footer {
-  background-color: var(--main-color); 
-  color: #ecf0f1; 
-  padding: 20px 0;
-}
+            background-color: #2F27CE; 
+            color: white; 
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        footer p {
+            margin: 0;
+            font-size: 14px;
+        }
+        
+        
+        @media (max-width: 768px) {
+            footer p {
+                font-size: 12px;
+            }
+        }
 
-.footerContainer {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
-  display: flex;
-  justify-content: center;
-}
-
-
-.socialIcons a {
-  color: #d2d2d2; 
-  font-size: 24px; 
-  margin: 0 10px; 
-  text-decoration: none; 
-}
-
-.socialIcons a:hover {
-  color: white;
-}
-
-/* Footer navigation */
-.footerNav ul {
-  list-style: none;
-  display: flex;
   
-}
 
-.footerNav li {
-  margin: 0 15px; 
-}
-
-.footerNav a {
-  color: #ecf0f1; 
-  text-decoration: none; 
-  font-size: 16px; 
-}
-
-.footerNav a:hover {
-  color: #3498db; 
-}
 
 
 @media (max-width: 1200px) {
@@ -1112,7 +1108,9 @@ footer {
     width: 100%;
     margin-top: 10px;
     margin-left: -1px;
+    
   }
+
   
   textarea{
     width: 100%;
@@ -1177,8 +1175,8 @@ footer {
   }
   
   .circle-container {
-    flex-wrap: wrap; /* Allow wrapping if needed */
-    justify-content: space-evenly; /* Center the circles */
+    flex-wrap: wrap; 
+    justify-content: space-evenly;
     width: 100%;
     height: auto;
     margin-top: 10px;
@@ -1204,7 +1202,7 @@ footer {
 <body>
 
     <!-- NAVIGATION BAR -->
-    <div class="container">
+    <div class="container" id="container">
       <nav>
         <div class="nav__logo">ASEEST</div>
         <ul class="nav__links">
@@ -1232,7 +1230,7 @@ footer {
             progress tracking with ease, convenient record management. All within the convenience 
             of a single platform.</p>
           <div class="landPage_btn">
-            <button class="nav__btn1">Learn More</button>
+            <button class="nav__btn1" onclick="location.href='#content-container'">Learn More</button>
             <a class="nav__btn2" href="applicationform.php">Apply Now</a>
           </div>
         </div>
@@ -1474,7 +1472,7 @@ footer {
 
 <!-- FAQs SECTION -->
 
-<div class="faqSection">
+<div class="faqSection" id="faq_section">
 <div class="title_div">
   <h1>FREQUENTLY ASKED QUESTIONS</h1>
   <p>Your questions answered here.</p>
@@ -1645,46 +1643,45 @@ footer {
 </div>
 
    <!-- CONTACT US SECTION -->
-   <div class="cont">
+   <div class="cont" id="cont">
     <div class="container_cn">
         <div class="contactUs">
             <h1>Contact Us</h1>
-            <form action="#" class="form">
-            
+            <form action="#" class="form" id="contactForm">
             <div class="column">
                 <div class="input-box">
                     <label>Full Name</label>
-                    <input type="text" name="" id="" placeholder="Enter Full Name">
+                    <input type="text" class="form-control" name="name" id="full-name" placeholder="Enter Full Name" required>
                 </div>
                 
                 <div class="input-box">
                     <label>Contact Number</label>
-                    <input type="tel" id="phone" name="phone" pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" placeholder="0912 345 6789">
+                    <input type="tel" class="form-control" name="phone" id="contact-number" placeholder="0912 345 6789" required>
                 </div>
         
             </div>
 
             <div class="input-box">
                 <label>Email</label>
-                <input type="email" name="" id="" placeholder="Enter Email">
+                <input type="email" class="form-control" name="email" id="email" placeholder="Enter Email" required>
             </div>
 
             <div class="input-box">
                 <label>Message</label>
                 <div class="message">
-                    <textarea name="" id="" placeholder="Write a message"></textarea>
-                    <button id="messageBTN">Send Message</button>
+                    <textarea class="form-control" name="message" id="message" placeholder="Write your message here" rows="4" required></textarea>
+                    <button type="submit" id="messageBTN">Send Message</button>
                 </div>
             </div>
         </form>    
         <hr>
         <div class="newsletterContainer">
-            <form action="">
+            <form id="newsletterForm" action="">
                 <h1>Join Our Newsletter</h1>
                 <p>Don't miss out on the valuable information and opportunities available to our newsletter subscribers.</p>
                 <div class="email-box">
-                    <input type="email" name="" id="" placeholder="Enter Your Email">
-                    <button type="button" name="button" id="emailBTN">Subscribe</button>
+                    <input name= "newsEmail" type="email" name="" id="" placeholder="Enter Your Email">
+                    <button type="submit" name="button" id="emailBTN">Subscribe</button>
                 </div>
             </form>
         </div>
@@ -1694,32 +1691,10 @@ footer {
    </div>
 
    <!-- FOOTER -->
-<footer>
-<div class="footerContainer">
-  <div class="socialIcons">
-    <a href=""><i class="ri-facebook-circle-fill"></i></a>
-    <a href=""><i class="ri-instagram-fill"></i></a>
-    <a href=""><i class="ri-twitter-x-fill"></i></a>
-    <a href=""><i class="ri-google-fill"></i></a>
-    <a href=""><i class="ri-youtube-fill"></i></a>
-  </div>
-
-
-  
-
-  <div class="footerNav">
-    <ul>
-      <li><a href="Home"></a></li>
-      <li><a href="News"></a></li>
-      <li><a href="About"></a></li>
-      <li><a href="Contact Us"></a></li>
-      <li><a href="Our Team"></a></li>
-    </ul>
-  </div>
-
- 
-</div>
+   <footer>
+    <p>&copy; 2024 ASEEST. All Rights Reserved.</p>
 </footer>
+    
    <script>
 document.querySelectorAll('.read-more').forEach(button => {
   button.addEventListener('click', () => {
@@ -1734,7 +1709,73 @@ document.querySelectorAll('.read-more').forEach(button => {
   });
 });
 </script>
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+    </script>
+    <script type="text/javascript">
+   (function(){
+      emailjs.init({
+        publicKey: "VvNK_GodtbuEqiIf5",
+      });
+   })();
+</script>
+<script>
+    emailjs.init('VvNK_GodtbuEqiIf5'); 
+    
+  
 
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault(); 
+
+  
+  const form = e.target;
+  const formData = new FormData(form);
+
+  
+  const templateParams = {
+    name: formData.get('name'),
+    phone: formData.get('phone'),
+    email: formData.get('email'),
+    message: formData.get('message')
+  };
+
+ 
+  emailjs.send('service_g4vqaoo', 'template_v949s18', templateParams)
+    .then(function(response) {
+      console.log('SUCCESS!', response);
+      alert('Message sent successfully!');
+      form.reset(); 
+    })
+    .catch(function(error) {
+      console.log('FAILED...', error);
+      alert('Failed to send the message. Please try again later.');
+    });
+});
+
+document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const newsform = e.target;
+  const newsformData = new FormData(newsform);
+
+  const newstemplateParams = {
+    email: newsformData.get('newsEmail')
+  };
+
+  emailjs.send('service_g4vqaoo', 'template_ju8t3be', newstemplateParams)
+    .then(function(response) {
+      console.log('SUCCESS!', response);
+      alert('Newsletter subscription successful!');
+      newsform.reset(); 
+    })
+    .catch(function(error) {
+      console.log('FAILED...', error);
+      alert('Failed to subscribe to the newsletter. Please try again later.');
+    });
+});
+
+  </script>
+  
 
 </body>
 </html>

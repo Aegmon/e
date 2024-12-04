@@ -56,7 +56,5 @@ if (isset($_POST['date']) && isset($_POST['family_circumstances']) && isset($_PO
     } else {
         echo json_encode(['success' => false, 'message' => 'Failed to insert data']);
     }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Missing required fields']);
-}
+} 
 ?>

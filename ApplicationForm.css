@@ -360,3 +360,27 @@ body {
     height: 35px;
     margin: 8px 0;
   }
+
+  .family-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+  }
+  
+  .family-row .col-md-3 {
+    flex: 1; 
+  }
+
+  button #add-more{
+    background-color: none;
+  }
+
+  label span.required {
+    color: red;
+  }
+  label.required::after, p.required::after  {
+    content: " *";
+    color: red;
+  }  
+  
+  

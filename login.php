@@ -15,11 +15,12 @@ if (isset($_POST['login'])) {
         if ($ses_sql && mysqli_num_rows($ses_sql) > 0) {
             $row = mysqli_fetch_assoc($ses_sql);
             $sql1 = $row['password'];
-            $id = $row['id'];
-       
+            $application_id = $row['application_id'];
+                $id = $row['id'];
 
             if (password_verify($password, $sql1)) {
-                $_SESSION['id'] = $id;
+                $_SESSION['application_id'] = $application_id;
+                        $_SESSION['id'] = $id;
                  header("location: otp.php");
              
             } else {
@@ -70,7 +71,7 @@ if (isset($_POST['login'])) {
                             <input type="checkbox">
                             <span class="check">Remember Me</span>
                         </label>
-                        <a href="#" title="Forgot Password" id="link-reset">Forgot Password?</a>
+                        <a href="forgetpassword.php" title="Forgot Password" id="link-reset">Forgot Password?</a>
                     </div>
                     <div class="input-field">
                         <button type="submit" name="login">Login</button>

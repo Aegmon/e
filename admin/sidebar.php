@@ -10,9 +10,8 @@ $cur_page = substr($_SERVER["SCRIPT_NAME"],strrpos($_SERVER["SCRIPT_NAME"],"/")+
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="description" content="Responsive Admin &amp; Dashboard Template based on Bootstrap 5">
 	<meta name="author" content="AdminKit">
-	<meta name="keywords" content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
@@ -77,6 +76,14 @@ active{
   
  background-color: #ffff;
 }
+.content-wrapper {
+    white-space: pre-wrap; /* Preserves whitespace and allows wrapping */
+    word-wrap: break-word; /* Break long words */
+    word-break: break-word; /* Ensure long words break */
+    max-width: 300px; /* Optional: Limit the width to a reasonable size */
+    overflow-wrap: break-word; /* Standard property for breaking words */
+    line-height: 1.5; /* Adjust line height for better readability */
+}
 
     </style>
 </head>
@@ -89,7 +96,7 @@ active{
 			<div class="sidebar-content js-simplebar">
 			<a class="sidebar-brand" href="home.php">
 			<div class="text-center">
-		<img src="#" class="img-fluid rounded-circle" width="250" height="250" />
+		<img src="logo.png" class="img-fluid rounded-circle" width="250" height="250" />
 	        </div>
         </a>
 
@@ -97,50 +104,67 @@ active{
           <span class="align-middle">Welcome Admin</span>
         </a>
 
-				<ul class="sidebar-nav">
-				<li class="sidebar-item <?php if( ($cur_page == 'home.php') ) {echo 'active ';} ?> ">
-						<a class="sidebar-link" href="home.php">
-              <i class="align-middle" style="color:#ffff;"data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
-            </a>
-					</li>
+		<ul class="sidebar-nav">
+    <li class="sidebar-item <?php if( ($cur_page == 'home.php') ) {echo 'active ';} ?> ">
+        <a class="sidebar-link" href="home.php">
+            <i class="align-middle" style="color:#ffff;" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+        </a>
+    </li>
 
-		
+    <li class="sidebar-item <?php if( ($cur_page == 'scholars.php') ) {echo 'active ';} ?>">
+        <a class="sidebar-link" href="scholars.php">
+            <i class="align-middle" data-feather="users" style="color:#ffff;"></i> <span class="align-middle">Eligibility Results</span>
+        </a>
+    </li>
 
-					<li class="sidebar-item <?php if( ($cur_page == 'scholars.php') ) {echo 'active ';} ?>">
-						<a class="sidebar-link" href="scholars.php">
-              <i class="align-middle" data-feather="users" style="color:#ffff;"></i> <span class="align-middle">Eligibility Results</span>
-            </a>
-					</li>
+    <li class="sidebar-item <?php if( ($cur_page == 'record.php') ) {echo 'active ';} ?>">
+        <a class="sidebar-link" href="record.php">
+            <i class="align-middle" data-feather="users" style="color:#ffff;"></i> <span class="align-middle">Records Management</span>
+        </a>
+    </li>
 
-					
-					
-					<li class="sidebar-item <?php if( ($cur_page == 'record.php') ) {echo 'active ';} ?>">
-						<a class="sidebar-link" href="record.php">
-              <i class="align-middle" data-feather="users" style="color:#ffff;"></i> <span class="align-middle">Records Management</span>
-            </a>
-					</li>
-				
-				
-			
+    <!-- New Reports Tab with Submenu -->
+  <li class="sidebar-item">
+    <a data-bs-target="#reports" data-bs-toggle="collapse" class="sidebar-link ">
+        <i class="align-middle" data-feather="file-text"  style="color:#ffff;"></i> <span class="align-middle" >Reports</span>
+    </a>
+    <ul id="reports" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+        <li class="sidebar-item <?php if ($cur_page == 'ineligible_applicants.php') {echo 'active';} ?>">
+            <a class="sidebar-link" href="ineligible_applicants.php">Ineligible Applicants</a>
+        </li>
+        <li class="sidebar-item <?php if ($cur_page == 'decline_applicants.php') {echo 'active';} ?>">
+            <a class="sidebar-link" href="decline_applicants.php">Decline Applicants</a>
+        </li>
+        <li class="sidebar-item <?php if ($cur_page == 'demoted_scholars.php') {echo 'active';} ?>">
+            <a class="sidebar-link" href="demoted_scholars.php">Demoted Scholars</a>
+        </li>
+        <li class="sidebar-item <?php if ($cur_page == 'graduated_scholars.php') {echo 'active';} ?>">
+            <a class="sidebar-link" href="graduated_scholars.php">Graduated Scholars</a>
+        </li>
+    </ul>
+</li>
 
-					<li class="sidebar-item <?php if( ($cur_page == 'adminsettings.php') ) {echo 'active ';} ?>">
-						<a class="sidebar-link" href="adminsettings.php">
-              <i class="align-middle" data-feather="settings" style="color:#ffff;"></i> <span class="align-middle">Admin Settings</span>
-            </a>
-					</li> 
-					<li class="sidebar-item <?php if( ($cur_page == 'logs.php') ) {echo 'active ';} ?>">
-						<a class="sidebar-link" href="logs.php">
-              <i class="align-middle" data-feather="activity" style="color:#ffff;"></i> <span class="align-middle">Activity Logs</span>
-            </a>
-					</li> 
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="logout.php">
-              <i class="align-middle" data-feather="log-out" style="color:#ffff;"></i> <span class="align-middle">Logout</span>
-            </a>
-					</li>
-                 
-		
-				</ul>
+
+
+    <li class="sidebar-item <?php if( ($cur_page == 'adminsettings.php') ) {echo 'active ';} ?>">
+        <a class="sidebar-link" href="adminsettings.php">
+            <i class="align-middle" data-feather="settings" style="color:#ffff;"></i> <span class="align-middle">Admin Settings</span>
+        </a>
+    </li> 
+
+    <li class="sidebar-item <?php if( ($cur_page == 'logs.php') ) {echo 'active ';} ?>">
+        <a class="sidebar-link" href="logs.php">
+            <i class="align-middle" data-feather="activity" style="color:#ffff;"></i> <span class="align-middle">Activity Logs</span>
+        </a>
+    </li> 
+
+    <li class="sidebar-item">
+        <a class="sidebar-link" href="logout.php">
+            <i class="align-middle" data-feather="log-out" style="color:#ffff;"></i> <span class="align-middle">Logout</span>
+        </a>
+    </li>
+</ul>
+
 
 		
 			</div>

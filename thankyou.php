@@ -128,7 +128,7 @@
 <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="container-custom text-center p-4">
         <h1>
-            Thank You for Your Application! <img src="Red Orange Black Minimalist Student Dream Logo Design (1) 1.png" alt="Logo">
+            Thank You for Your Application! <img src="logo.png" alt="Logo">
         </h1>
         <p>
             We appreciate your interest in our scholarship program. <b>Your application has been successfully submitted, and our team is currently reviewing all submissions.</b>

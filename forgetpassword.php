@@ -3,16 +3,16 @@ include("connection.php");
 	if(isset($_POST['send'])){
 		ini_set( 'display_errors', 1 );
 		error_reporting( E_ALL );
-		$from = "Reformaattagumpay@gmail.com";
+		$from = "aseest080122@gmail.com";
 		$to = $_POST['email'];
-		$query = "SELECT * from userdata where Email='$to'";
+		$query = "SELECT * from scholaraccount where email='$to'";
 		$ses_sql = mysqli_query($con,$query);
 		$row = mysqli_fetch_assoc($ses_sql);
-        $token = $row['token'];
+  $application_id = $row['application_id'];
 
 		$subject = "Password Reset";
 		$message = "
-	Click this link to reset your password - https://www.repormaattagumpay.com/resetpassword.php?token=$token
+	Click this link to reset your password - https://aseest.website/resetpassword.php?application_id=$application_id
 		";
 	   // The content-type header must be set when sending HTML email
 		$headers = "MIME-Version: 1.0" . "\r\n";
@@ -77,9 +77,8 @@ include("connection.php");
 								
 									
 										<div class="text-center mt-3">
-											<input type="submit"  class="btn btn-lg btn-primary" Value="Send" name="send" style="background-color: #297506; border-color: border-color: coral;"></br>
-											<!-- <button type="submit" class="btn btn-lg btn-primary">Sign in</button> -->
-											 <a href="login.php">Already have an account?</a>
+											<input type="submit"  class="btn btn-lg btn-primary" Value="Send" name="send" ></br>
+									
 										</div>
 									</form>
 								</div>
